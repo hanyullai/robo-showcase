@@ -13,14 +13,41 @@ let heroUserPaused = false;
 let heroVisible = false;
 const originalText = new Map([...document.querySelectorAll('[data-i18n]')].map((node) => [node, node.innerHTML]));
 const zh = {
-  navWork:'实验现场',navSystem:'如何运作',navEvidence:'结果证据',eyebrow:'具身智能实验室 · HANYU LAI',
+  navWork:'实验现场',navSystem:'如何运作',navEvidence:'结果证据',eyebrow:'具身智能实验室',
   hero1:'语言输入。',hero2:'行动输出。',heroDescription:'让 agent 自己写策略、操作机械臂，<br>再用独立验证证明结果。',watch:'进入实验现场',how:'看看它如何运作',heroNote:'真实 AGENT 实跑 · MUJOCO 仿真<br>不是预先编排的成功动画',
   fieldRecording:'实验录像 / 004',simulation:'仿真录像回放',heroFilmTitle:'叠放。暂停。继续。',heroFilmSub:'重新生成策略，完成尚未完成的任务。',independentlyVerified:'独立验证通过',stripLabel:'从自然语言到实际动作',
   workEyebrow:'01 / 实验现场',workTitle:'少一点描述。<br>多一点行动。',workDescription:'选择一项任务，看真实的执行过程。<br>然后打开驱动它的原始策略代码。',liftTag:'第一次抓起物体',stackTag:'精确放置，保持稳定',pickplaceTag:'把物体送到指定位置',resumeTag:'停得下来，也能继续',actualFootage:'真实仿真器录像',generatedPolicy:'模型自主生成的 POLICY',copy:'复制',original:'原始文件 ↗',codeNote:'保留模型生成的原文，未经人工修正。',metricResult:'独立任务验证',metricTime:'任务实际耗时',metricCalls:'模型请求次数',metricMotion:'移动到位次数',details:'运行记录 +',originalVideo:'查看原始录像 ↗',selectionNote:'这里展示精选成功记录，不代表总体成功率。录像仅包含仿真时段，不包含模型等待；不同记录的模型与协议不同。所有演示均为仿真，尚不代表真实机械臂验收。',
   systemEyebrow:'02 / 如何运作',systemTitle:'智能需要闭环。<br>结果需要证据。',sense:'观察当前世界。',senseText:'通过 RGB-D 和相机标定获得可计算的几何信息，让行动有据可依。',plan:'写出下一步。',planText:'语言模型自主生成 Python 策略，并根据执行反馈修正下一步。',act:'让控制可控。',actText:'独立运行时管理武装、租约、逐周期反馈控制和用户中断。',verify:'核对真实结果。',verifyText:'独立任务检查确认结果，停止回执和租约释放完成收尾。',
   recoveryEyebrow:'03 / 一次真实的暂停',recoveryTitle:'暂停动作。<br>继续完成。',recoveryDescription:'移动途中，操作者按下停止。<br>Agent 必须根据此刻的状态重新出发。',stopMetric:'本次测得的停止 ACK',stopNote:'一次本地仿真测量。<br>不代表实时性保证。',log1:'运动被中断',log1Text:'停止 ACK 确认，随后五秒没有新增运动。',log2:'重新观察当前状态',log2Text:'旧租约被拒绝，agent 自行申请了新租约。',log3:'新策略，完成叠放',log3Text:'恢复后的十次移动均到位，两次任务验证通过。',log4:'明确完成收尾',log4Text:'Agent 主动停止、确认 ACK，并释放租约。',evidenceNote:'每一个结果，都有对应的记录。',inspectEvidence:'查看运行数据与文件哈希 ↗',
-  closingEyebrow:'开放代码，可观察行为。',closingTitle:'给语言<br>一双行动的手<span class="accent">。</span>',exploreSource:'查看项目源码',runLocally:'在 Mac 上运行 ↗',setupNote:'需要先安装项目并配置模型与仿真器，详见运行手册。',footer:'Hanyu Lai 的独立具身智能项目。',footerStatus:'持续开放构建'
+  closingEyebrow:'开放代码，可观察行为。',closingTitle:'给语言<br>一双行动的手<span class="accent">。</span>',exploreSource:'查看项目源码',runLocally:'在 Mac 上运行 ↗',setupNote:'需要先安装项目并配置模型与仿真器，详见运行手册。',footer:'独立具身智能项目。',footerStatus:'持续开放构建'
 };
+Object.assign(zh, {
+  "navChallenges": "进阶挑战",
+  "seeChallenges": "不止一次抓取 ↗",
+  "challengeEyebrow": "NEXT / 更难的挑战",
+  "challengeTitle": "更多物体。<br>更多变化。",
+  "challengeDescription": "三种考验 agent 应变能力的新场景。<br>场景预告 · 完整实跑尚待验证。",
+  "challengeStatus": "待验证",
+  "conceptLabel": "场景示意 / 非实跑录像",
+  "challengeCriteria": "怎样才算通过？",
+  "sortTitle": "桌面整理挑战。",
+  "sortLead": "四种物体，一句指令。<br>中途，还能改变主意。",
+  "sortPrompt": "“先罐头，再牛奶。”<br><span>“等一下，牛奶最后放。”</span>",
+  "sortSkill": "识别 → 排序 → 记住进度",
+  "sortCriteria": "使用允许的视觉输入识别四种物体，遵循更新后的顺序，保留已完成的放置，并独立验证所有物品归位。完整分拣加中途改指令尚未验收通过。",
+  "recoverTitle": "被打乱，也能继续。",
+  "recoverLead": "目标位置变了。<br>Agent 得自己发现。",
+  "recoverPrompt": "“把它抓起来。”<br><span>抓取之前，物体被移动了。</span>",
+  "recoverSkill": "发现变化 → 重新观察 → 恢复行动",
+  "recoverCriteria": "识别物体位置变化，弃用过期目标，根据当前观测重新生成动作；仍需支持停止、恢复和独立验证。下方已录制的 Stack 暂停恢复并不代表已验证物体移位。",
+  "rebuildTitle": "拆开，再重新搭好。",
+  "rebuildLead": "先拆掉已有积木塔。<br>再按新顺序重建。",
+  "rebuildPrompt": "“把这座塔重新搭一下。”<br><span>“绿色在最上面，红色在中间。”</span>",
+  "rebuildSkill": "规划依赖 → 重建 → 验证",
+  "rebuildCriteria": "按可执行的顺序拆取积木、安排临时放置，再按指定颜色顺序重建；验证松爪、稳定性和最终顺序。已有的双方块 Stack 记录并不代表已通过这项多积木挑战。",
+  "challengeDisclosure": "以上为场景预告，尚非成功演示。已验证的实跑录像与模型原始策略代码见下方实验区。",
+  "challengeRecordings": "观看已验证的实跑 ↓"
+});
 const descriptions = {
   lift:{title:'LIFT / GRASP & RAISE',prompt:{en:'“Grasp the red cube, lift it, and independently verify the result.”',zh:'“抓起红方块，将它抬升，并独立验证任务结果。”'},notes:{en:'Selected autonomous Lift run, seed 911. The model generated one policy; 3 moves reached their targets and lift_object passed. Model: claude-fable-5. H1 was off. Historical bounded protocol. These displayed task prompts are concise translations, not byte-for-byte transcripts.',zh:'精选自主 Lift 记录，seed 911。模型生成一段策略，三次移动全部到位，lift_object 验证通过。使用 claude-fable-5，H1 关闭，属于历史有界协议。页面任务指令为精简译文，并非完整会话原文。'}},
   stack:{title:'STACK / PLACE & RELEASE',prompt:{en:'“Stack the red cube on the green cube. Release, retreat, and verify stability.”',zh:'“把红方块叠在绿方块上，松爪、撤离，再确认稳定。”'},notes:{en:'Selected autonomous Stack run, seed 1202. Two original policies are available above. A not_connected error was corrected by the agent before it completed the task. 6 moves reached; independent verification passed with 23 stable cycles. H1 off. Historical bounded protocol.',zh:'精选自主 Stack 记录，seed 1202。上方可切换两份原始策略。模型自行纠正了 not_connected 错误，随后完成任务。六次移动到位，独立验证通过，稳定窗口为 23 周期。H1 关闭，属于历史有界协议。'}},

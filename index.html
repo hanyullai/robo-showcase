@@ -6,30 +6,30 @@
   <meta name="theme-color" content="#0b0e0b">
   <meta name="description" content="Robo — natural language becomes robot policy. Watch real autonomous Lift, Stack and Pick & Place runs, inspect the generated code, and follow the evidence.">
   <meta property="og:title" content="ROBO — Language in. Motion out.">
-  <meta property="og:description" content="An embodied agent lab by Hanyu Lai. Real recordings. Generated policies. Independently verified results.">
+  <meta property="og:description" content="An embodied agent lab. Real recordings. Generated policies. Independently verified results.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://hanyullai.github.io/robo-showcase/assets/images/social.jpg">
+  <meta property="og:image" content="https://hanyullai.github.io/robo-showcase/assets/images/social-v2.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <title>ROBO — Language in. Motion out.</title>
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
-  <link rel="stylesheet" href="style.css?v=2">
-  <script type="module" src="app.js"></script>
+  <link rel="stylesheet" href="style.css?v=3">
+  <script type="module" src="app.js?v=3"></script>
 </head>
 <body>
 <a class="skip" href="#experiments">Skip to experiments</a>
 <div class="page-grid" aria-hidden="true"></div>
 <header class="navigation">
   <a class="brand" href="#" aria-label="Robo home"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 26V7h12a7 7 0 0 1 0 14h-5m6-1 8 6"/><circle cx="6" cy="7" r="3"/><circle cx="25" cy="26" r="3"/></svg>robo<span class="brand-dot">.</span></a>
-  <nav aria-label="Main navigation"><a href="#experiments" data-i18n="navWork">Experiments</a><a href="#system" data-i18n="navSystem">The system</a><a href="#evidence" data-i18n="navEvidence">Evidence</a></nav>
+  <nav aria-label="Main navigation"><a href="#challenges" data-i18n="navChallenges">Next challenges</a><a href="#experiments" data-i18n="navWork">Experiments</a><a href="#system" data-i18n="navSystem">The system</a><a href="#evidence" data-i18n="navEvidence">Evidence</a></nav>
   <div class="nav-actions"><button id="language" type="button" aria-label="Switch to Chinese">中文</button><a class="source-link" href="https://github.com/hxx90/coding-agent-harness/tree/codex/robo-hardware-harness" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a></div>
 </header>
 <main>
 <section class="hero wrap" aria-labelledby="hero-title">
   <div class="hero-copy">
-    <div class="eyebrow"><span class="status-dot"></span><span data-i18n="eyebrow">AN EMBODIED AGENT LAB · BY HANYU LAI</span></div>
+    <div class="eyebrow"><span class="status-dot"></span><span data-i18n="eyebrow">AN EMBODIED AGENT LAB</span></div>
     <h1 id="hero-title"><span data-i18n="hero1">Language in.</span><br><span class="accent" data-i18n="hero2">Motion out.</span></h1>
     <p class="hero-description" data-i18n="heroDescription">An agent that writes the policy,<br>moves the robot, and proves the result.</p>
-    <div class="hero-cta"><a class="button primary" href="#experiments"><span class="play-icon" aria-hidden="true"></span><span data-i18n="watch">Explore the runs</span><span aria-hidden="true">↘</span></a><a class="text-link" href="#system" data-i18n="how">See how it works</a></div>
+    <div class="hero-cta"><a class="button primary" href="#experiments"><span class="play-icon" aria-hidden="true"></span><span data-i18n="watch">Explore the runs</span><span aria-hidden="true">↘</span></a><a class="text-link" href="#challenges" data-i18n="seeChallenges">Beyond a single grasp ↗</a></div>
     <div class="hero-footnote"><span class="cross" aria-hidden="true">+</span><span data-i18n="heroNote">REAL AGENT RUNS. MUJOCO SIMULATION.<br>NO SCRIPTED SUCCESS.</span></div>
   </div>
   <div class="hero-visual">
@@ -44,6 +44,37 @@
   </div>
 </section>
 <div class="capability-strip"><div class="wrap strip-inner"><span data-i18n="stripLabel">FROM INTENT TO EXECUTION</span><span>Natural language</span><b>→</b><span>Python policy</span><b>→</b><span>Robot action</span><b>→</b><span>Independent verification</span><span class="strip-plus" aria-hidden="true">+</span></div></div>
+<section class="challenges wrap section-space" id="challenges" aria-labelledby="challenges-title">
+  <div class="section-heading"><div><div class="eyebrow section-number" data-i18n="challengeEyebrow">NEXT / THE HARDER QUESTIONS</div><h2 id="challenges-title" data-i18n="challengeTitle">More objects.<br>More unexpected.</h2></div><p data-i18n="challengeDescription">Three challenges for an agent that can adapt.<br>Proposed scenarios · full runs not yet verified.</p></div>
+  <div class="challenge-grid">
+    <article class="challenge-card">
+      <div class="challenge-top"><span class="mono">01 / SORT + REPLAN</span><span class="challenge-status" data-i18n="challengeStatus">TO BE VERIFIED</span></div>
+      <div class="challenge-art" aria-hidden="true"><svg viewBox="0 0 360 210"><path class="art-grid" d="M20 170h320M20 120h320M20 70h320M70 20v170M180 20v170M290 20v170"/><rect class="art-bin" x="214" y="38" width="110" height="130" rx="8"/><path class="art-grid" d="M269 38v130M214 103h110"/><rect class="art-object" x="47" y="43" width="29" height="46" rx="12"/><path class="art-object alt" d="m112 111 12-14h23l11 14v47h-46z"/><rect class="art-object" x="46" y="136" width="41" height="24" rx="8"/><rect class="art-object alt" x="132" y="41" width="33" height="43" rx="3"/><path class="art-path" d="M81 65h99q15 0 15 15v51h39"/><path class="art-arrow" d="m226 124 9 7-9 7"/><circle class="art-target" cx="295" cy="68" r="13"/></svg><span class="art-label" data-i18n="conceptLabel">SCENARIO SKETCH / NOT A RECORDING</span></div>
+      <h3 data-i18n="sortTitle">The desk reset.</h3><p class="challenge-lead" data-i18n="sortLead">Four objects. One instruction.<br>Then a change of plan.</p>
+      <blockquote data-i18n="sortPrompt">“Can first. Milk next.”<br><span>“Actually, leave the milk until last.”</span></blockquote>
+      <div class="challenge-skill" data-i18n="sortSkill">RECOGNIZE → ORDER → REMEMBER</div>
+      <details><summary data-i18n="challengeCriteria">What counts as a pass?</summary><p data-i18n="sortCriteria">Identify all four objects from allowed visual inputs; follow the revised order, preserve completed placements, and independently verify every final placement. Full sorting plus an instruction change is not yet validated.</p></details>
+    </article>
+    <article class="challenge-card">
+      <div class="challenge-top"><span class="mono">02 / DISTURB + RECOVER</span><span class="challenge-status" data-i18n="challengeStatus">TO BE VERIFIED</span></div>
+      <div class="challenge-art" aria-hidden="true"><svg viewBox="0 0 360 210"><path class="art-grid" d="M20 170h320M20 120h320M20 70h320M70 20v170M180 20v170M290 20v170"/><rect class="art-ghost" x="91" y="119" width="35" height="35" rx="3"/><rect class="art-object" x="233" y="103" width="35" height="35" rx="3"/><path class="art-path" d="M137 137q47-63 84-20"/><path class="art-arrow" d="m212 110 10 8-12 3"/><path class="art-arm" d="M46 49h81l43 44m-57-46 45 51m-3-6-10 18m24-19 13 14"/><circle class="art-joint" cx="118" cy="49" r="9"/><circle class="art-target" cx="250" cy="120" r="34"/></svg><span class="art-label" data-i18n="conceptLabel">SCENARIO SKETCH / NOT A RECORDING</span></div>
+      <h3 data-i18n="recoverTitle">Move the goalposts.</h3><p class="challenge-lead" data-i18n="recoverLead">The target moved.<br>The agent has to notice.</p>
+      <blockquote data-i18n="recoverPrompt">“Pick that up.”<br><span>The object shifts before the grasp.</span></blockquote>
+      <div class="challenge-skill" data-i18n="recoverSkill">NOTICE → RE-OBSERVE → RECOVER</div>
+      <details><summary data-i18n="challengeCriteria">What counts as a pass?</summary><p data-i18n="recoverCriteria">Detect the changed object position, discard the stale target and generate a new action from current observations. Stop, resume and independent verification must still work. The recorded Stack pause/resume run below does not validate object displacement.</p></details>
+    </article>
+    <article class="challenge-card">
+      <div class="challenge-top"><span class="mono">03 / DISASSEMBLE + REBUILD</span><span class="challenge-status" data-i18n="challengeStatus">TO BE VERIFIED</span></div>
+      <div class="challenge-art" aria-hidden="true"><svg viewBox="0 0 360 210"><path class="art-grid" d="M20 170h320M20 120h320M20 70h320M70 20v170M180 20v170M290 20v170"/><rect class="art-object" x="69" y="130" width="42" height="36" rx="3"/><rect class="art-object alt" x="69" y="92" width="42" height="36" rx="3"/><rect class="art-object pale" x="69" y="54" width="42" height="36" rx="3"/><rect class="art-object pale" x="250" y="130" width="42" height="36" rx="3"/><rect class="art-object" x="250" y="92" width="42" height="36" rx="3"/><rect class="art-object alt" x="250" y="54" width="42" height="36" rx="3"/><path class="art-path" d="M132 107h94"/><path class="art-arrow" d="m215 98 12 9-12 9"/><path class="art-bin" d="M60 171h62m119 0h62"/></svg><span class="art-label" data-i18n="conceptLabel">SCENARIO SKETCH / NOT A RECORDING</span></div>
+      <h3 data-i18n="rebuildTitle">A different kind of stack.</h3><p class="challenge-lead" data-i18n="rebuildLead">Take it apart.<br>Build it back in a new order.</p>
+      <blockquote data-i18n="rebuildPrompt">“Rebuild this tower.”<br><span>“Green on top. Red in the middle.”</span></blockquote>
+      <div class="challenge-skill" data-i18n="rebuildSkill">PLAN DEPENDENCIES → REBUILD → VERIFY</div>
+      <details><summary data-i18n="challengeCriteria">What counts as a pass?</summary><p data-i18n="rebuildCriteria">Remove blocks in a feasible sequence, use temporary placements, and build the requested color order. Verify release, stability and final order. The existing two-cube Stack run does not validate this multi-block challenge.</p></details>
+    </article>
+  </div>
+  <p class="disclosure" data-i18n="challengeDisclosure">These are scenario previews, not successful demonstrations. Verified recordings and their original generated policies are available in the experiments below.</p>
+  <a class="text-link challenge-recordings" href="#experiments" data-i18n="challengeRecordings">Watch the verified runs ↓</a>
+</section>
 <section class="experiments wrap section-space" id="experiments" aria-labelledby="experiments-title">
   <div class="section-heading"><div><div class="eyebrow section-number" data-i18n="workEyebrow">01 / THE EXPERIMENTS</div><h2 id="experiments-title" data-i18n="workTitle">Less talk.<br>More robot.</h2></div><p data-i18n="workDescription">Choose a task. Watch what happened.<br>Then open the code that made it happen.</p></div>
   <div class="task-tabs" role="tablist" aria-label="Recorded experiments">
@@ -82,7 +113,7 @@
 </section>
 <section class="closing"><div class="wrap closing-inner"><div class="eyebrow" data-i18n="closingEyebrow">OPEN CODE. OBSERVABLE BEHAVIOR.</div><h2 data-i18n="closingTitle">Give language<br>a pair of hands<span class="accent">.</span></h2><div class="closing-actions"><a class="button primary" href="https://github.com/hxx90/coding-agent-harness/tree/codex/robo-hardware-harness" target="_blank" rel="noopener noreferrer"><span data-i18n="exploreSource">Explore the source</span><span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/hxx90/coding-agent-harness/blob/codex/robo-hardware-harness/docs/robo-harness-local-runbook.md" target="_blank" rel="noopener noreferrer" data-i18n="runLocally">Run it on your Mac ↗</a></div><div class="terminal-command"><span aria-hidden="true">$</span><code>robo --legacy-harness --workdir .</code><button id="copy-command" aria-label="Copy launch command">Copy</button></div><p class="setup-note" data-i18n="setupNote">After project installation and model / simulator configuration. See the runbook.</p></div></section>
 </main>
-<footer class="wrap footer"><a class="brand" href="#">robo<span class="brand-dot">.</span></a><span data-i18n="footer">An independent embodied-agent project by Hanyu Lai.</span><a href="https://github.com/hanyullai" target="_blank" rel="noopener noreferrer">@hanyullai ↗</a><span class="footer-status"><i class="status-dot"></i><span data-i18n="footerStatus">BUILT IN THE OPEN</span></span></footer>
+<footer class="wrap footer"><a class="brand" href="#">robo<span class="brand-dot">.</span></a><span data-i18n="footer">An independent embodied-agent project.</span><a href="https://github.com/hanyullai/robo-showcase" target="_blank" rel="noopener noreferrer">Website source ↗</a><span class="footer-status"><i class="status-dot"></i><span data-i18n="footerStatus">BUILT IN THE OPEN</span></span></footer>
 <div id="toast" role="status" aria-live="polite"></div>
 <noscript><p class="wrap">JavaScript enables task switching and source inspection. <a href="evidence/runs.json">Browse the run records</a> or <a href="assets/policies/resume-1.py.txt">read the Stack policy</a>.</p></noscript>
 </body>

@@ -1,6 +1,6 @@
 # ROBO — Language in. Motion out.
 
-A static, bilingual showcase of Hanyu Lai's Robo embodied-agent project.
+A static, bilingual showcase of the Robo embodied-agent project.
 
 The site presents **selected real autonomous CLI simulation runs**, original model-generated policy files, and independently checked task results. It does not claim an aggregate success rate, official benchmark standing or physical robot validation.
 
@@ -39,3 +39,7 @@ Only curated recordings, generated policies and result summaries are published. 
 - Evidence links and reproducibility information.
 
 Main project: https://github.com/hxx90/coding-agent-harness/tree/codex/robo-hardware-harness
+
+## Advanced challenge previews
+
+Desk sorting with revised instructions, object-displacement recovery, and tower rebuilding are labeled as proposed, unverified scenarios. Their illustrations are schematics, not simulator recordings or evidence of completion. The four verified experiment records remain separate.
