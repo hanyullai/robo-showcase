@@ -1,0 +1,104 @@
+import { runs } from './assets/runs.js';
+
+const $ = (selector) => document.querySelector(selector);
+const sourceCache = new Map();
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let language = 'en';
+try { language = localStorage.getItem('robo-language') === 'zh' ? 'zh' : 'en'; } catch { /* Storage is optional. */ }
+let selected = runs.find((run) => run.id === 'resume');
+let source = '';
+let sourceVersion = 0;
+let toastTimer;
+let heroUserPaused = false;
+let heroVisible = false;
+const originalText = new Map([...document.querySelectorAll('[data-i18n]')].map((node) => [node, node.innerHTML]));
+const zh = {
+  navWork:'实验现场',navSystem:'如何运作',navEvidence:'结果证据',eyebrow:'具身智能实验室 · HANYU LAI',
+  hero1:'语言输入。',hero2:'行动输出。',heroDescription:'让 agent 自己写策略、操作机械臂，<br>再用独立验证证明结果。',watch:'进入实验现场',how:'看看它如何运作',heroNote:'真实 AGENT 实跑 · MUJOCO 仿真<br>不是预先编排的成功动画',
+  fieldRecording:'实验录像 / 004',simulation:'仿真录像回放',heroFilmTitle:'叠放。暂停。继续。',heroFilmSub:'重新生成策略，完成尚未完成的任务。',independentlyVerified:'独立验证通过',stripLabel:'从自然语言到实际动作',
+  workEyebrow:'01 / 实验现场',workTitle:'少一点描述。<br>多一点行动。',workDescription:'选择一项任务，看真实的执行过程。<br>然后打开驱动它的原始策略代码。',liftTag:'第一次抓起物体',stackTag:'精确放置，保持稳定',pickplaceTag:'把物体送到指定位置',resumeTag:'停得下来，也能继续',actualFootage:'真实仿真器录像',generatedPolicy:'模型自主生成的 POLICY',copy:'复制',original:'原始文件 ↗',codeNote:'保留模型生成的原文，未经人工修正。',metricResult:'独立任务验证',metricTime:'任务实际耗时',metricCalls:'模型请求次数',metricMotion:'移动到位次数',details:'运行记录 +',originalVideo:'查看原始录像 ↗',selectionNote:'这里展示精选成功记录，不代表总体成功率。录像仅包含仿真时段，不包含模型等待；不同记录的模型与协议不同。所有演示均为仿真，尚不代表真实机械臂验收。',
+  systemEyebrow:'02 / 如何运作',systemTitle:'智能需要闭环。<br>结果需要证据。',sense:'观察当前世界。',senseText:'通过 RGB-D 和相机标定获得可计算的几何信息，让行动有据可依。',plan:'写出下一步。',planText:'语言模型自主生成 Python 策略，并根据执行反馈修正下一步。',act:'让控制可控。',actText:'独立运行时管理武装、租约、逐周期反馈控制和用户中断。',verify:'核对真实结果。',verifyText:'独立任务检查确认结果，停止回执和租约释放完成收尾。',
+  recoveryEyebrow:'03 / 一次真实的暂停',recoveryTitle:'暂停动作。<br>继续完成。',recoveryDescription:'移动途中，操作者按下停止。<br>Agent 必须根据此刻的状态重新出发。',stopMetric:'本次测得的停止 ACK',stopNote:'一次本地仿真测量。<br>不代表实时性保证。',log1:'运动被中断',log1Text:'停止 ACK 确认，随后五秒没有新增运动。',log2:'重新观察当前状态',log2Text:'旧租约被拒绝，agent 自行申请了新租约。',log3:'新策略，完成叠放',log3Text:'恢复后的十次移动均到位，两次任务验证通过。',log4:'明确完成收尾',log4Text:'Agent 主动停止、确认 ACK，并释放租约。',evidenceNote:'每一个结果，都有对应的记录。',inspectEvidence:'查看运行数据与文件哈希 ↗',
+  closingEyebrow:'开放代码，可观察行为。',closingTitle:'给语言<br>一双行动的手<span class="accent">。</span>',exploreSource:'查看项目源码',runLocally:'在 Mac 上运行 ↗',setupNote:'需要先安装项目并配置模型与仿真器，详见运行手册。',footer:'Hanyu Lai 的独立具身智能项目。',footerStatus:'持续开放构建'
+};
+const descriptions = {
+  lift:{title:'LIFT / GRASP & RAISE',prompt:{en:'“Grasp the red cube, lift it, and independently verify the result.”',zh:'“抓起红方块，将它抬升，并独立验证任务结果。”'},notes:{en:'Selected autonomous Lift run, seed 911. The model generated one policy; 3 moves reached their targets and lift_object passed. Model: claude-fable-5. H1 was off. Historical bounded protocol. These displayed task prompts are concise translations, not byte-for-byte transcripts.',zh:'精选自主 Lift 记录，seed 911。模型生成一段策略，三次移动全部到位，lift_object 验证通过。使用 claude-fable-5，H1 关闭，属于历史有界协议。页面任务指令为精简译文，并非完整会话原文。'}},
+  stack:{title:'STACK / PLACE & RELEASE',prompt:{en:'“Stack the red cube on the green cube. Release, retreat, and verify stability.”',zh:'“把红方块叠在绿方块上，松爪、撤离，再确认稳定。”'},notes:{en:'Selected autonomous Stack run, seed 1202. Two original policies are available above. A not_connected error was corrected by the agent before it completed the task. 6 moves reached; independent verification passed with 23 stable cycles. H1 off. Historical bounded protocol.',zh:'精选自主 Stack 记录，seed 1202。上方可切换两份原始策略。模型自行纠正了 not_connected 错误，随后完成任务。六次移动到位，独立验证通过，稳定窗口为 23 周期。H1 关闭，属于历史有界协议。'}},
+  pickplace:{title:'PICK & PLACE / CAN TO BIN',prompt:{en:'“Move the red can into its assigned compartment, release it, and verify placement.”',zh:'“把红色罐子放进指定分区，松爪并独立验证放置结果。”'},notes:{en:'Native single-can PickPlaceCan, seed 1302. This is not four-object sorting. The destination comes from the public fixed workcell specification. A list-comprehension policy was rejected before actions; the agent generated a corrected policy. 7 moves reached. H1 off; continuous protocol.',zh:'原生单罐 PickPlaceCan，seed 1302，不是四物体分拣。目标格子来自公开固定工位规格。第一次策略因列表推导式被执行前拒绝，模型随后自行生成了修正版。七次移动到位，H1 关闭，连续执行协议。'}},
+  resume:{title:'STACK / PAUSE & RESUME',prompt:{en:'“Continue the Stack task from the current state. Verify the result, then stop and release.”',zh:'“从当前状态继续 Stack 任务。独立验证结果，再停止并释放租约。”'},notes:{en:'Real Opus 5.5 run, seed 2607. After an operator interruption and a five-second stationary pause, the agent re-observed, recovered from a stale lease, and wrote a new policy. All 10 resumed moves reached; both Stack checks passed with 80 stable cycles. 15 requests / 201.1 s across the task. H1 on. One successful recovery trial, not a recovery success rate.',zh:'真实 Opus 5.5 运行，seed 2607。人工暂停并静置五秒后，模型重新观察，自行纠正旧租约问题，生成新策略。恢复后的十次移动全部到位，策略内外验证通过，稳定 80 个周期。整项任务共 15 次请求、201.1 秒，H1 开启。这是一次恢复成功记录，不代表总体恢复成功率。'}}
+};
+
+function notify(message){clearTimeout(toastTimer);$('#toast').textContent=message;$('#toast').classList.add('visible');toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2300);}
+function escapeHtml(value){return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function highlight(text){
+  const pattern=/(#[^\n]*|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|\b(?:if|else|elif|for|while|in|not|and|or|True|False|None|break|continue)\b|\b\d+(?:\.\d+)?\b|\b[a-zA-Z_]\w*(?=\())/g;
+  return text.split('\n').map(line=>{
+    let result='',end=0;
+    for(const match of line.matchAll(pattern)){
+      result+=escapeHtml(line.slice(end,match.index));const token=match[0];
+      const kind=token.startsWith('#')?'comment':/^['"]/.test(token)?'string':/^\d/.test(token)?'number':/^(if|else|elif|for|while|in|not|and|or|True|False|None|break|continue)$/.test(token)?'keyword':'function';
+      result+=`<span class="tok-${kind}">${escapeHtml(token)}</span>`;end=match.index+token.length;
+    }
+    result+=escapeHtml(line.slice(end));return `<span class="code-line">${result||' '}</span>`;
+  }).join('');
+}
+async function loadPolicy(index=0){
+  const version=++sourceVersion;const policy=selected.policies[index];source='';$('#copy-policy').disabled=true;
+  $('#policy-code').textContent=language==='zh'?'正在读取原始策略…':'Loading original policy…';
+  $('#download-policy').href=policy.path;
+  try{
+    let text=sourceCache.get(policy.path);
+    if(text===undefined){const response=await fetch(policy.path);if(!response.ok)throw new Error('Policy unavailable');text=await response.text();sourceCache.set(policy.path,text);}
+    if(version!==sourceVersion)return;
+    source=text;$('#policy-code').innerHTML=highlight(text);$('.code-window').scrollTop=0;$('.code-window').scrollLeft=0;$('#copy-policy').disabled=false;
+  }catch{
+    if(version===sourceVersion)$('#policy-code').textContent=language==='zh'?'未能读取策略，请点击上方“原始文件”。':'Could not load the policy. Use the original file link above.';
+  }
+}
+function renderRunText(){
+  const info=descriptions[selected.id];$('#run-title').textContent=info.title;$('#run-seed').textContent=`SEED ${selected.seed}`;$('#run-prompt').textContent=info.prompt[language];$('#run-notes').textContent=info.notes[language];
+  $('#metric-result').innerHTML=(language==='zh'?'通过':'PASSED')+' <i>↗</i>';
+  $('#metric-time').innerHTML=`${selected.elapsed_seconds.toFixed(1)} <small>s</small>`;
+  $('#metric-calls').textContent=selected.model_calls;$('#metric-motion').textContent=`${selected.control_reached} / ${selected.control_attempts}`;
+  $('#run-model').textContent=selected.model==='claude-opus-5-5'?'OPUS 5.5':'FABLE 5';$('#run-date').textContent=selected.date.replaceAll('-','.');$('#run-library').textContent=`H1 ${selected.h1==='off'?'OFF':'ON'}`;
+  $('#original-video').href=selected.original_video;
+  const opened=!$('#run-details').hidden;$('#details-toggle').textContent=language==='zh'?`运行记录 ${opened?'−':'+'}`:`Run notes ${opened?'−':'+'}`;
+}
+async function selectRun(id,{autoplay=false}={}){
+  selected=runs.find(r=>r.id===id)||runs[0];
+  document.querySelectorAll('[data-task]').forEach(tab=>{const active=tab.dataset.task===selected.id;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;});
+  $('#experiment-panel').setAttribute('aria-labelledby',`tab-${selected.id}`);
+  const video=$('#run-video');video.pause();video.src=selected.video;video.poster=selected.poster;video.setAttribute('aria-label',`${selected.id} recorded autonomous experiment`);video.load();
+  $('#policy-select').replaceChildren(...selected.policies.map((policy,i)=>{const option=document.createElement('option');option.value=i;option.textContent=policy.label;return option;}));
+  $('#run-details').hidden=true;$('#details-toggle').setAttribute('aria-expanded','false');renderRunText();
+  const nextHash=selected.id==='resume'?'#experiments':`#run-${selected.id}`;if(autoplay){history.replaceState(null,'',nextHash);video.play().catch(()=>{});}
+  await loadPolicy();
+}
+function setLanguage(lang){
+  language=lang;try{localStorage.setItem('robo-language',lang);}catch{/* Preference is optional. */}
+  document.documentElement.lang=lang==='zh'?'zh-CN':'en';
+  for(const [node,original] of originalText){node.innerHTML=lang==='zh'?(zh[node.dataset.i18n]||original):original;}
+  $('#language').textContent=lang==='zh'?'EN':'中文';$('#language').setAttribute('aria-label',lang==='zh'?'Switch to English':'切换到中文');renderRunText();syncHeroButton();
+}
+async function copy(text,button){
+  const old=button.textContent;
+  try{await navigator.clipboard.writeText(text);button.textContent=language==='zh'?'已复制':'Copied';notify(language==='zh'?'已复制到剪贴板':'Copied to clipboard');setTimeout(()=>{button.textContent=old;},1800);}
+  catch{notify(language==='zh'?'浏览器未允许复制，请打开原始文件手动复制。':'Copy unavailable. Open the original file to copy manually.');}
+}
+const hero=$('#hero-video');
+function syncHeroButton(){const paused=hero.paused;$('#hero-toggle').textContent=paused?'▶':'Ⅱ';$('#hero-toggle').setAttribute('aria-label',language==='zh'?(paused?'播放主录像':'暂停主录像'):(paused?'Play hero recording':'Pause hero recording'));}
+function updateHero(){if(heroVisible&&!heroUserPaused&&!reducedMotion.matches&&!document.hidden)hero.play().catch(syncHeroButton);else hero.pause();}
+hero.addEventListener('play',syncHeroButton);hero.addEventListener('pause',syncHeroButton);
+$('#hero-toggle').addEventListener('click',()=>{heroUserPaused=!hero.paused;if(hero.paused)hero.play().catch(()=>notify(language==='zh'?'请重试播放':'Please try playback again'));else hero.pause();});
+new IntersectionObserver(entries=>{heroVisible=entries[0].isIntersecting;updateHero();},{threshold:.1}).observe(hero);
+reducedMotion.addEventListener('change',updateHero);document.addEventListener('visibilitychange',()=>{updateHero();if(document.hidden)$('#run-video').pause();});
+$('#language').addEventListener('click',()=>setLanguage(language==='en'?'zh':'en'));
+$('#copy-policy').addEventListener('click',()=>copy(source,$('#copy-policy')));
+$('#copy-command').addEventListener('click',()=>copy('robo --legacy-harness --workdir .',$('#copy-command')));
+$('#policy-select').addEventListener('change',event=>loadPolicy(Number(event.target.value)));
+$('#details-toggle').addEventListener('click',()=>{$('#run-details').hidden=!$('#run-details').hidden;$('#details-toggle').setAttribute('aria-expanded',String(!$('#run-details').hidden));renderRunText();});
+const tabs=[...document.querySelectorAll('[data-task]')];
+for(const tab of tabs){tab.addEventListener('click',()=>selectRun(tab.dataset.task,{autoplay:true}));tab.addEventListener('keydown',event=>{const index=tabs.indexOf(tab);let target;if(event.key==='ArrowRight')target=tabs[(index+1)%tabs.length];if(event.key==='ArrowLeft')target=tabs[(index-1+tabs.length)%tabs.length];if(event.key==='Home')target=tabs[0];if(event.key==='End')target=tabs.at(-1);if(target){event.preventDefault();target.focus();selectRun(target.dataset.task,{autoplay:true});}});}
+const initialId=location.hash.startsWith('#run-')?location.hash.slice(5):'resume';
+setLanguage(language);await selectRun(initialId);
+if(location.hash.startsWith('#run-'))$('#experiments').scrollIntoView({behavior:'instant'});

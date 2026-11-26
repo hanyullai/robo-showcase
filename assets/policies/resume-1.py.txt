@@ -1,0 +1,66 @@
+s = observe()
+st = s["state"]
+r = resting_geometry(st["perception"]["points"])
+g = resting_geometry(st["support_perception"]["points"])
+print("red", r["ok"], r["top_center"], r["height"], r["base_z"], "grasp", r["grasp"])
+print("green", g["ok"], g["top_center"], g["height"], g["base_z"])
+if not (r["ok"] and g["ok"]):
+    print("perception not ok")
+    stop()
+rx = r["grasp"][0]
+ry = r["grasp"][1]
+grasp_z = r["grasp"][2]
+grasp_depth = r["z_top"] - grasp_z
+safe_z = 0.97
+loose = [0.01, 0.01, 0.012]
+if st["gripper_positions"][0] < 0.035:
+    gripper_open()
+m = move_to(target_xyz=[rx, ry, safe_z], tolerance_xyz=loose, max_steps=200)
+print("above red", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"])
+m = move_to(target_xyz=[rx, ry, grasp_z + 0.04], max_steps=200)
+m = move_to(target_xyz=[rx, ry, grasp_z], max_steps=200)
+print("at grasp", m["result"]["motion"]["reached"], m["result"]["motion"]["error_xyz"])
+c = gripper_close()
+s1 = observe()
+print("grip after close", s1["state"]["gripper_positions"])
+m = move_to(target_xyz=[rx, ry, safe_z], tolerance_xyz=loose, max_steps=200)
+s2 = observe()
+r2 = resting_geometry(s2["state"]["perception"]["points"], support_z=r["base_z"])
+print("lifted red", r2["ok"], r2["z_top"], r2["base_z"], r2["elevated"], r2["clearance"], "grip", s2["state"]["gripper_positions"])
+if (not r2["ok"]) or r2["z_top"] < r["z_top"] + 0.05:
+    print("red not lifted, abort")
+    stop()
+g3 = resting_geometry(s2["state"]["support_perception"]["points"])
+gx = g["top_center"][0]
+gy = g["top_center"][1]
+gtop = g["z_top"]
+if g3["ok"]:
+    gx = g3["top_center"][0]
+    gy = g3["top_center"][1]
+    gtop = g3["z_top"]
+ee = s2["state"]["end_effector_position"]
+offx = max(-0.01, min(0.01, ee[0] - r2["top_center"][0]))
+offy = max(-0.01, min(0.01, ee[1] - r2["top_center"][1]))
+held_depth = ee[2] - r2["base_z"]
+print("green top", gx, gy, gtop, "offset", offx, offy, "ee-to-red-base", held_depth)
+tx = gx + offx
+ty = gy + offy
+m = move_to(target_xyz=[tx, ty, safe_z], tolerance_xyz=loose, max_steps=200)
+print("above green", m["result"]["motion"]["reached"], m["result"]["motion"]["error_xyz"])
+release_z = gtop + (r["height"] - grasp_depth) + 0.008
+m = move_to(target_xyz=[tx, ty, release_z + 0.04], max_steps=200)
+m = move_to(target_xyz=[tx, ty, release_z], max_steps=200)
+print("at release", m["result"]["motion"]["reached"], m["result"]["motion"]["error_xyz"], "release_z", release_z)
+gripper_open()
+s4 = observe()
+print("grip open", s4["state"]["gripper_positions"])
+m = move_to(target_xyz=[tx, ty, safe_z], tolerance_xyz=loose, max_steps=200)
+print("retreat", m["result"]["motion"]["reached"])
+hold = observe()["state"]["end_effector_position"]
+m = move_to(target_xyz=hold, tolerance_xyz=loose, settle_steps=20, max_steps=60)
+m = move_to(target_xyz=hold, tolerance_xyz=loose, settle_steps=20, max_steps=60)
+s5 = observe()
+r5 = resting_geometry(s5["state"]["perception"]["points"], support_z=gtop)
+print("final red", r5["ok"], r5["top_center"], r5["base_z"], r5["elevated"], r5["clearance"])
+rep = verify("stack_objects")
+print("verify", rep["status"])
