@@ -1,0 +1,20 @@
+s = observe()
+r = inspect_region(bbox_xyxy=[166, 198, 224, 262], sequence=s["sequence"])
+p = r["result"]["perception"]
+zt = 0.0
+for q in p["points"]:
+    zt = max(zt, q[2])
+tx = 0.0
+ty = 0.0
+n = 0
+for q in p["points"]:
+    if q[2] > zt - 0.01:
+        tx = tx + q[0]
+        ty = ty + q[1]
+        n = n + 1
+print("ok", p["ok"], "top", tx / n, ty / n, zt, n)
+gripper_open()
+r = move_to(target_xyz=[tx / n, ty / n, 1.10], tolerance_xyz=[0.01, 0.01, 0.01], max_steps=300, timeout_seconds=90, settle_steps=5)
+print("above", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+s = observe()
+print("q", s["state"]["joint_positions"], s["state"]["end_effector_quaternion_xyzw"])

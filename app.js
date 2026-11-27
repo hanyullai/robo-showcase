@@ -1,4 +1,4 @@
-import { runs } from './assets/runs.js';
+import { runs } from './assets/runs.js?v=5';
 
 const $ = (selector) => document.querySelector(selector);
 const sourceCache = new Map();
@@ -22,12 +22,16 @@ const zh = {
   closingEyebrow:'开放代码，可观察行为。',closingTitle:'给语言<br>一双行动的手<span class="accent">。</span>',exploreSource:'查看项目源码',runLocally:'在 Mac 上运行 ↗',setupNote:'需要先安装项目并配置模型与仿真器，详见运行手册。',footer:'独立具身智能项目。',footerStatus:'持续开放构建'
 };
 Object.assign(zh, {
+  replanTag:'暂停、改优先级、继续完成',
+  replanVerified:'实跑已验证',
+  watchReplan:'真实录像 / 观看完整实跑 ↗',
+  priorityTag:'倒下后重新观察、抓取',
   sortingTag:'四件物品，按序完成',
   "navChallenges": "进阶挑战",
   "seeChallenges": "不止一次抓取 ↗",
   "challengeEyebrow": "NEXT / 更难的挑战",
   "challengeTitle": "更多物体。<br>更多变化。",
-  "challengeDescription": "三种考验 agent 应变能力的新场景。<br>场景预告 · 完整实跑尚待验证。",
+  "challengeDescription": "一项挑战已经实跑验证。<br>另外两项，留待继续探索。",
   "challengeStatus": "待验证",
   "conceptLabel": "场景示意 / 非实跑录像",
   "challengeCriteria": "怎样才算通过？",
@@ -35,7 +39,7 @@ Object.assign(zh, {
   "sortLead": "四种物体，一句指令。<br>中途，还能改变主意。",
   "sortPrompt": "“先罐头，再牛奶。”<br><span>“等一下，牛奶最后放。”</span>",
   "sortSkill": "识别 → 排序 → 记住进度",
-  "sortCriteria": "使用允许的视觉输入识别四种物体，遵循更新后的顺序，保留已完成的放置，并独立验证所有物品归位。完整分拣加中途改指令尚未验收通过。",
+  "sortCriteria": "一次真实 CLI 流程已验证：罐头放好后暂停，保留其放置，再完成麦片、面包和牛奶。策略内外顺序验证、模型主动停止和释放租约均通过，没有重置场景。",
   "recoverTitle": "被打乱，也能继续。",
   "recoverLead": "目标位置变了。<br>Agent 得自己发现。",
   "recoverPrompt": "“把它抓起来。”<br><span>抓取之前，物体被移动了。</span>",
@@ -46,7 +50,7 @@ Object.assign(zh, {
   "rebuildPrompt": "“把这座塔重新搭一下。”<br><span>“绿色在最上面，红色在中间。”</span>",
   "rebuildSkill": "规划依赖 → 重建 → 验证",
   "rebuildCriteria": "按可执行的顺序拆取积木、安排临时放置，再按指定颜色顺序重建；验证松爪、稳定性和最终顺序。已有的双方块 Stack 记录并不代表已通过这项多积木挑战。",
-  "challengeDisclosure": "以上为场景预告，尚非成功演示。已验证的实跑录像与模型原始策略代码见下方实验区。",
+  "challengeDisclosure": "分拣并改顺序已有真实验证录像。物体移位和拆塔重建仍是未验证的场景示意。这些精选实跑不代表总体成功率。",
   "challengeRecordings": "观看已验证的实跑 ↓"
 });
 const descriptions = {
@@ -86,6 +90,7 @@ async function loadPolicy(index=0){
 function renderRunText(){
   const info=descriptions[selected.id]||selected.presentation;$('#run-title').textContent=info.title;$('#run-seed').textContent=`SEED ${selected.seed}`;$('#run-prompt').textContent=info.prompt[language];$('#run-notes').textContent=info.notes[language];
   $('#metric-result').innerHTML=(language==='zh'?'通过':'PASSED')+' <i>↗</i>';
+  $('#run-outcome').textContent=info.outcome?.[language]||'';$('#run-outcome').hidden=!info.outcome;
   $('#metric-time').innerHTML=`${selected.elapsed_seconds.toFixed(1)} <small>s</small>`;
   $('#metric-calls').textContent=selected.model_calls;$('#metric-motion').textContent=`${selected.control_reached} / ${selected.control_attempts}`;
   $('#run-model').textContent=selected.model==='claude-opus-5-5'?'OPUS 5.5':'FABLE 5';$('#run-date').textContent=selected.date.replaceAll('-','.');$('#run-library').textContent=`H1 ${selected.h1==='off'?'OFF':'ON'}`;
@@ -130,3 +135,5 @@ for(const tab of tabs){tab.addEventListener('click',()=>selectRun(tab.dataset.ta
 const initialId=location.hash.startsWith('#run-')?location.hash.slice(5):'sorting';
 setLanguage(language);await selectRun(initialId);
 if(location.hash.startsWith('#run-'))$('#experiments').scrollIntoView({behavior:'instant'});
+
+window.addEventListener('hashchange',()=>{const id=location.hash.slice(5);if(location.hash.startsWith('#run-')&&runs.some(run=>run.id===id)){selectRun(id);$('#experiments').scrollIntoView({behavior:'instant'});}});

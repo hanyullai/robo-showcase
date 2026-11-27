@@ -26,13 +26,13 @@ GitHub Pages: deploy the `main` branch, repository root. `.nojekyll` ensures ass
 - `evidence/stack-resume-original.mp4`: original latest recovery recording.
 - Earlier original recordings and broader project documentation are linked to the source repository.
 
-Videos contain simulation frames and omit time spent waiting for the model. Task wall time is shown separately. The older Lift and Stack runs use historical bounded protocols; PickPlace and recovery use continuous protocols. The latest record used H1; the three earlier records did not. Do not treat these records as a paired comparison.
+Videos contain simulation frames and omit time spent waiting for the model. Task wall time is shown separately. The older Lift and Stack runs use historical bounded protocols; PickPlace and recovery use continuous protocols. The four newest records used H1; the three earlier records did not. Do not treat these records as a paired comparison.
 
 Only curated recordings, generated policies and result summaries are published. Full model conversations, credentials, machine paths and private runtime logs are not included.
 
 ## Interaction
 
-- Five experiment tabs with keyboard arrow / Home / End navigation.
+- Seven experiment tabs with keyboard arrow / Home / End navigation.
 - Original policy selector, download and copy.
 - English / Chinese interface.
 - User-controlled video playback and reduced-motion support.
@@ -42,7 +42,7 @@ Main project: https://github.com/hxx90/coding-agent-harness/tree/codex/robo-hard
 
 ## Advanced challenge previews
 
-Desk sorting with revised instructions, object-displacement recovery, and tower rebuilding are labeled as proposed, unverified scenarios. Their illustrations are schematics, not simulator recordings or evidence of completion. The four verified experiment records remain separate.
+Desk sorting with revised instructions now links to a real verified recording. Object-displacement recovery and tower rebuilding remain proposed, unverified scenarios, shown as schematics.
 
 ## Four-object ordered sorting (2026-11-27)
 
@@ -52,4 +52,26 @@ order, passed independent checks and model-directed stop/lease release. It took
 All 10 original policies are included. The 96.55-second browser video joins every
 recording segment chronologically, including failed actions, and excludes model
 waiting. H1 was enabled. Full sorting is now verified for this one scene; mid-task
-instruction changes remain a separate unverified challenge.
+instruction changes are now verified in the additional run below.
+
+## Two new selected journeys (2026-11-27)
+
+| Demo | Verified task | Complete model-directed cleanup | Wall time | Requests | Moves reached |
+| --- | --- | --- | --- | --- | --- |
+| Big Item First | 4/4: cereal → bread → milk → can | No: final content_filter; harness fallback stop ACK and release passed | 381.0 s | 22 | 26/28 |
+| Change of Plan | 4/4: can → cereal → bread → milk | Yes | 414.7 s | 29, including one operator interruption | 24/26 |
+
+Both ran once, with the same seed 2701, Opus 5.5, H1 and controller. The first
+record includes recovery after the milk carton tipped over. In the second, the
+operator paused after can verification, held for 5.02 seconds without new
+motion, and changed the remaining priority. The original can completion cycle
+was preserved; no scene reset or winning policy was injected.
+
+Each includes 10 unedited generated policies and every simulation recording
+segment, including failed motions. Videos omit model waiting and stationary
+periods with no new simulation frames. The five-second hold is validated by
+runtime records; its wall-clock timeline is in `evidence/runs.json`.
+
+Task/order success, control receipts and model-versus-fallback cleanup are
+reported separately. Source file hashes identify the locally modified candidate.
+These two selected demonstrations are not an aggregate benchmark or comparison.

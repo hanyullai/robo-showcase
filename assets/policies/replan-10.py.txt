@@ -1,0 +1,45 @@
+s = observe()
+r = inspect_region(bbox_xyxy=[114, 210, 155, 278], sequence=s["sequence"])
+p = r["result"]["perception"]
+print("ok", p["ok"], p["count"])
+if not p["ok"]:
+    stop()
+g = resting_geometry(p["points"], support_z=0.82)
+print("geom", g["ok"], g["center"], g["z_top"], g["height"], g["span_xy"], g["top_center"])
+tc = g["top_center"]
+gx = tc[0]
+gy = tc[1]
+zt = g["z_top"]
+sp = g["span_xy"]
+yaw = 0.0
+if sp[1] < sp[0]:
+    yaw = 1.5708
+print("target", gx, gy, zt, "yaw", yaw)
+gripper_open()
+r = move_to(target_xyz=[gx, gy, 1.12], target_yaw_rad=yaw, tolerance_xyz=[0.008, 0.008, 0.01], tolerance_orientation_rad=0.08, max_steps=300, timeout_seconds=90, settle_steps=5)
+m = r["result"]["motion"]
+print("above", m["reached"], m["position_xyz"], m["orientation_error_rad"])
+r = move_to(target_xyz=[gx, gy, zt - 0.04], target_yaw_rad=yaw, tolerance_xyz=[0.006, 0.006, 0.008], tolerance_orientation_rad=0.08, max_steps=250, timeout_seconds=60, settle_steps=5)
+m = r["result"]["motion"]
+print("down", m["reached"], m["position_xyz"])
+gripper_close()
+r = move_to(target_xyz=[gx, gy, 1.14], tolerance_xyz=[0.015, 0.015, 0.015], max_steps=250, timeout_seconds=60, settle_steps=5)
+print("lift", r["result"]["motion"]["reached"])
+s = observe()
+gp = s["state"]["gripper_positions"]
+print("after lift", gp, s["state"]["end_effector_position"])
+if gp[0] - gp[1] < 0.01:
+    print("ABORT: gripper empty after lift")
+    gripper_open()
+    stop()
+r = move_to(target_xyz=[0.0025, 0.1575, 1.14], tolerance_xyz=[0.015, 0.015, 0.015], max_steps=350, timeout_seconds=90, settle_steps=5)
+print("carry", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+r = move_to(target_xyz=[0.0025, 0.1575, 0.97], tolerance_xyz=[0.015, 0.015, 0.015], max_steps=250, timeout_seconds=60, settle_steps=5)
+print("lower", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+gripper_open()
+r = move_to(target_xyz=[0.0025, 0.1575, 1.14], tolerance_xyz=[0.02, 0.02, 0.02], max_steps=250, timeout_seconds=60, settle_steps=20)
+print("retreat", r["result"]["motion"]["reached"], r["result"]["motion"]["cycles"])
+v = verify("sort_objects", order=["can", "cereal", "bread", "milk"])
+print("verify", v["status"])
+for c in v["checks"]:
+    print(c["name"], c["status"], c["observed"])

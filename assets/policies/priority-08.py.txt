@@ -1,0 +1,25 @@
+cx = 0.172
+cy = -0.270
+yaw = 1.356
+safe = 1.12
+gripper_open()
+r = move_to(target_xyz=[cx, cy, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+print("above", r["result"]["motion"]["reached"])
+r = move_to(target_xyz=[cx, cy, 0.845], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60, tolerance_xyz=[0.006,0.006,0.012])
+print("down", r["result"]["motion"]["position_xyz"])
+gripper_close()
+r = move_to(target_xyz=[cx, cy, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+s = observe()
+gp = s["state"]["gripper_positions"]
+print("lifted grip", gp)
+if gp[0] - gp[1] < 0.01:
+    print("grasp lost")
+    stop()
+r = move_to(target_xyz=[0.0025, 0.1575, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+r = move_to(target_xyz=[0.0025, 0.1575, 0.93], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+gripper_open()
+r = move_to(target_xyz=[0.0025, 0.1575, safe], max_steps=300, timeout_seconds=60)
+print("retreat", r["result"]["motion"]["reached"])
+v = verify("sort_objects")
+for c in v["checks"]:
+    print(c["name"], c["status"], c["observed"])

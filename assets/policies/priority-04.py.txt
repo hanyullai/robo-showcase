@@ -1,0 +1,35 @@
+s = observe()
+r = inspect_region(bbox_xyxy=[156,258,190,296], sequence=s["state"]["perception"]["sequence"])
+p = r["result"]["perception"]
+if not p["ok"]:
+    print("no points")
+    stop()
+g = resting_geometry(p["points"], support_z=0.82)
+print("bread", g["count"], g["top_center"], g["height"], g["span_xy"])
+cx = g["top_center"][0]
+cy = g["top_center"][1]
+gz = max(g["z_top"] - 0.025, 0.838)
+safe = 1.12
+yaw = 0.0
+if g["span_xy"][1] < g["span_xy"][0]:
+    yaw = 1.5708
+gripper_open()
+r = move_to(target_xyz=[cx, cy, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+r = move_to(target_xyz=[cx, cy, gz], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60, tolerance_xyz=[0.006,0.006,0.012])
+print("down", r["result"]["motion"]["position_xyz"])
+gripper_close()
+r = move_to(target_xyz=[cx, cy, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+s = observe()
+gp = s["state"]["gripper_positions"]
+print("lifted grip", gp)
+if gp[0] - gp[1] < 0.01:
+    print("grasp lost")
+    stop()
+r = move_to(target_xyz=[0.1975, 0.1575, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+r = move_to(target_xyz=[0.1975, 0.1575, 0.93], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+gripper_open()
+r = move_to(target_xyz=[0.1975, 0.1575, safe], max_steps=300, timeout_seconds=60)
+print("retreat", r["result"]["motion"]["reached"])
+v = verify("sort_objects")
+for c in v["checks"]:
+    print(c["name"], c["status"], c["observed"])

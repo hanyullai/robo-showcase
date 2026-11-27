@@ -1,0 +1,10 @@
+r = move_to(target_xyz=[0.12, -0.25, 1.15], max_steps=300, timeout_seconds=60)
+print("up", r["result"]["motion"]["reached"])
+s = observe()
+r = inspect_region(bbox_xyxy=[115,210,155,278], sequence=s["state"]["perception"]["sequence"])
+p = r["result"]["perception"]
+print("ok", p["ok"], p["count"])
+if not p["ok"]:
+    stop()
+g = resting_geometry(p["points"], support_z=0.82)
+print("milk", g["top_center"], g["z_top"], g["height"], g["span_xy"], g["elevated"])

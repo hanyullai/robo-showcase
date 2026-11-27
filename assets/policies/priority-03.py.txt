@@ -1,0 +1,29 @@
+yaw = 0.37
+cx = 0.09
+cy = -0.12
+gz = 0.93
+safe = 1.15
+gripper_open()
+r = move_to(target_xyz=[cx, cy, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+print("above", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+r = move_to(target_xyz=[cx, cy, gz], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+print("down", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+gripper_close()
+s = observe()
+print("grip", s["state"]["gripper_positions"])
+r = move_to(target_xyz=[cx, cy, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+s = observe()
+print("lifted", s["state"]["gripper_positions"], s["state"]["end_effector_position"])
+gp = s["state"]["gripper_positions"]
+if gp[0] - gp[1] < 0.01:
+    print("grasp lost")
+    stop()
+r = move_to(target_xyz=[0.0025, 0.4025, safe], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+print("over bin", r["result"]["motion"]["reached"])
+r = move_to(target_xyz=[0.0025, 0.4025, 0.95], target_yaw_rad=yaw, max_steps=300, timeout_seconds=60)
+print("lowered", r["result"]["motion"]["reached"])
+gripper_open()
+r = move_to(target_xyz=[0.0025, 0.4025, safe], max_steps=300, timeout_seconds=60)
+print("retreat", r["result"]["motion"]["reached"])
+v = verify("sort_objects")
+print("verify", v["status"], v)

@@ -12,8 +12,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <title>ROBO — Language in. Motion out.</title>
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
-  <link rel="stylesheet" href="style.css?v=4">
-  <script type="module" src="app.js?v=4"></script>
+  <link rel="stylesheet" href="style.css?v=5">
+  <script type="module" src="app.js?v=5"></script>
 </head>
 <body>
 <a class="skip" href="#experiments">Skip to experiments</a>
@@ -45,15 +45,15 @@
 </section>
 <div class="capability-strip"><div class="wrap strip-inner"><span data-i18n="stripLabel">FROM INTENT TO EXECUTION</span><span>Natural language</span><b>→</b><span>Python policy</span><b>→</b><span>Robot action</span><b>→</b><span>Independent verification</span><span class="strip-plus" aria-hidden="true">+</span></div></div>
 <section class="challenges wrap section-space" id="challenges" aria-labelledby="challenges-title">
-  <div class="section-heading"><div><div class="eyebrow section-number" data-i18n="challengeEyebrow">NEXT / THE HARDER QUESTIONS</div><h2 id="challenges-title" data-i18n="challengeTitle">More objects.<br>More unexpected.</h2></div><p data-i18n="challengeDescription">Three challenges for an agent that can adapt.<br>Proposed scenarios · full runs not yet verified.</p></div>
+  <div class="section-heading"><div><div class="eyebrow section-number" data-i18n="challengeEyebrow">NEXT / THE HARDER QUESTIONS</div><h2 id="challenges-title" data-i18n="challengeTitle">More objects.<br>More unexpected.</h2></div><p data-i18n="challengeDescription">One challenge now verified.<br>Two more directions to explore.</p></div>
   <div class="challenge-grid">
     <article class="challenge-card">
-      <div class="challenge-top"><span class="mono">01 / SORT + REPLAN</span><span class="challenge-status" data-i18n="challengeStatus">TO BE VERIFIED</span></div>
-      <div class="challenge-art" aria-hidden="true"><svg viewBox="0 0 360 210"><path class="art-grid" d="M20 170h320M20 120h320M20 70h320M70 20v170M180 20v170M290 20v170"/><rect class="art-bin" x="214" y="38" width="110" height="130" rx="8"/><path class="art-grid" d="M269 38v130M214 103h110"/><rect class="art-object" x="47" y="43" width="29" height="46" rx="12"/><path class="art-object alt" d="m112 111 12-14h23l11 14v47h-46z"/><rect class="art-object" x="46" y="136" width="41" height="24" rx="8"/><rect class="art-object alt" x="132" y="41" width="33" height="43" rx="3"/><path class="art-path" d="M81 65h99q15 0 15 15v51h39"/><path class="art-arrow" d="m226 124 9 7-9 7"/><circle class="art-target" cx="295" cy="68" r="13"/></svg><span class="art-label" data-i18n="conceptLabel">SCENARIO SKETCH / NOT A RECORDING</span></div>
+      <div class="challenge-top"><span class="mono">01 / SORT + REPLAN</span><span class="challenge-status" data-i18n="replanVerified">VERIFIED RUN</span></div>
+      <a class="challenge-art recorded-challenge" href="#run-replan" aria-label="Watch the verified pause and reprioritize run"><img src="assets/images/replan.jpg" alt="All four objects sorted after a mid-task instruction change" loading="lazy"><span class="art-label" data-i18n="watchReplan">REAL RECORDING / WATCH THE RUN ↗</span></a>
       <h3 data-i18n="sortTitle">The desk reset.</h3><p class="challenge-lead" data-i18n="sortLead">Four objects. One instruction.<br>Then a change of plan.</p>
       <blockquote data-i18n="sortPrompt">“Can first. Milk next.”<br><span>“Actually, leave the milk until last.”</span></blockquote>
       <div class="challenge-skill" data-i18n="sortSkill">RECOGNIZE → ORDER → REMEMBER</div>
-      <details><summary data-i18n="challengeCriteria">What counts as a pass?</summary><p data-i18n="sortCriteria">Identify all four objects from allowed visual inputs; follow the revised order, preserve completed placements, and independently verify every final placement. Full sorting plus an instruction change is not yet validated.</p></details>
+      <details><summary data-i18n="challengeCriteria">What counts as a pass?</summary><p data-i18n="sortCriteria">Verified in one real CLI journey: pause after the can, keep its placement, then complete cereal, bread and milk. Independent ordered checks and model-directed stop/release passed. No scene reset.</p></details>
     </article>
     <article class="challenge-card">
       <div class="challenge-top"><span class="mono">02 / DISTURB + RECOVER</span><span class="challenge-status" data-i18n="challengeStatus">TO BE VERIFIED</span></div>
@@ -72,7 +72,7 @@
       <details><summary data-i18n="challengeCriteria">What counts as a pass?</summary><p data-i18n="rebuildCriteria">Remove blocks in a feasible sequence, use temporary placements, and build the requested color order. Verify release, stability and final order. The existing two-cube Stack run does not validate this multi-block challenge.</p></details>
     </article>
   </div>
-  <p class="disclosure" data-i18n="challengeDisclosure">These are scenario previews, not successful demonstrations. Verified recordings and their original generated policies are available in the experiments below.</p>
+  <p class="disclosure" data-i18n="challengeDisclosure">Sort + Replan now has a verified recording below. Object displacement and tower rebuilding remain unverified scenario sketches. These selected runs do not establish a success rate.</p>
   <a class="text-link challenge-recordings" href="#experiments" data-i18n="challengeRecordings">Watch the verified runs ↓</a>
 </section>
 <section class="experiments wrap section-space" id="experiments" aria-labelledby="experiments-title">
@@ -83,6 +83,8 @@
     <button role="tab" id="tab-pickplace" aria-controls="experiment-panel" aria-selected="false" tabindex="-1" data-task="pickplace"><span class="tab-index">03</span><div><strong>Pick & Place</strong><span data-i18n="pickplaceTag">A place for everything</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
     <button role="tab" id="tab-resume" aria-controls="experiment-panel" aria-selected="true" tabindex="0" data-task="resume"><span class="tab-index">04</span><div><strong>Pause → Resume</strong><span data-i18n="resumeTag">Finish what you started</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
     <button role="tab" id="tab-sorting" aria-controls="experiment-panel" aria-selected="false" tabindex="-1" data-task="sorting"><span class="tab-index">05</span><div><strong>Four Objects</strong><span data-i18n="sortingTag">Every object. In order.</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
+    <button role="tab" id="tab-priority" aria-controls="experiment-panel" aria-selected="false" tabindex="-1" data-task="priority"><span class="tab-index">06</span><div><strong>Big Item First</strong><span data-i18n="priorityTag">Tip over. Re-observe. Recover.</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
+    <button role="tab" id="tab-replan" aria-controls="experiment-panel" aria-selected="false" tabindex="-1" data-task="replan"><span class="tab-index">07</span><div><strong>Change of Plan</strong><span data-i18n="replanTag">Pause. Reprioritize. Finish.</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
   </div>
   <div class="experiment-panel" id="experiment-panel" role="tabpanel" aria-labelledby="tab-resume">
     <div class="run-screen">
@@ -98,6 +100,7 @@
     </div>
   </div>
   <div class="run-metrics" aria-live="polite"><div><span data-i18n="metricResult">INDEPENDENT RESULT</span><strong id="metric-result" class="accent">PASSED <i>↗</i></strong></div><div><span data-i18n="metricTime">TASK WALL TIME</span><strong id="metric-time">201.1 <small>s</small></strong></div><div><span data-i18n="metricCalls">MODEL REQUESTS</span><strong id="metric-calls">15</strong></div><div><span data-i18n="metricMotion">MOVES REACHED</span><strong id="metric-motion">10 / 10</strong></div></div>
+  <p id="run-outcome" class="disclosure" aria-live="polite" hidden></p>
   <div class="run-detail-line mono"><span id="run-model">OPUS 5.5</span><span id="run-date">2026.11.26</span><span id="run-library">H1 ON</span><button id="details-toggle" aria-expanded="false" aria-controls="run-details" data-i18n="details">Run notes +</button></div>
   <div id="run-details" hidden><p id="run-notes"></p><a id="original-video" href="evidence/stack-resume-original.mp4" data-i18n="originalVideo">View original recording ↗</a></div>
   <p class="disclosure" data-i18n="selectionNote">Selected successful runs, not an overall success rate. Playback shows simulation time and excludes model waiting. Models and protocols differ across runs. All recordings use simulation, not physical hardware.</p>

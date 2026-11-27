@@ -1,0 +1,19 @@
+boxes = {"can": [62,232,96,278], "milk": [117,212,153,276], "cereal": [170,200,224,262], "bread": [160,262,188,292]}
+for name in ["cereal","bread","milk","can"]:
+    s = observe()
+    r = inspect_region(bbox_xyxy=boxes[name], sequence=s["state"]["perception"]["sequence"])
+    p = r["result"]["perception"]
+    if p["ok"]:
+        g = resting_geometry(p["points"], support_z=0.82)
+        x0 = 9
+        x1 = -9
+        y0 = 9
+        y1 = -9
+        for q in p["points"]:
+            x0 = min(x0, q[0])
+            x1 = max(x1, q[0])
+            y0 = min(y0, q[1])
+            y1 = max(y1, q[1])
+        print(name, g["count"], g["center"], g["z_top"], g["height"], g["base_z"], g["grasp"], "x", x0, x1, "y", y0, y1)
+    else:
+        print(name, "not ok", p)

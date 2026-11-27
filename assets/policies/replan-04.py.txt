@@ -1,0 +1,12 @@
+tol = [0.015, 0.015, 0.015]
+r = move_to(target_xyz=[0.1975, 0.4025, 1.0], target_yaw_rad=0.0, tolerance_xyz=tol, tolerance_orientation_rad=0.2, max_steps=300, timeout_seconds=90, settle_steps=5)
+print("carry", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"], r["result"]["motion"]["orientation_error_rad"])
+r = move_to(target_xyz=[0.1975, 0.4025, 0.93], target_yaw_rad=0.0, tolerance_xyz=tol, tolerance_orientation_rad=0.2, max_steps=200, timeout_seconds=60, settle_steps=5)
+print("lower", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+gripper_open()
+r = move_to(target_xyz=[0.1975, 0.4025, 1.08], tolerance_xyz=[0.02, 0.02, 0.02], max_steps=200, timeout_seconds=60, settle_steps=20)
+print("retreat", r["result"]["motion"]["reached"], r["result"]["motion"]["cycles"])
+s = observe()
+print("ee", s["state"]["end_effector_position"], s["state"]["gripper_positions"])
+v = verify("sort_objects")
+print("verify", v)

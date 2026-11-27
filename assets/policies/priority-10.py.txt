@@ -1,0 +1,19 @@
+s = observe()
+gp = s["state"]["gripper_positions"]
+print("gp", gp, "ee", s["state"]["end_effector_position"])
+if gp[0] - gp[1] > 0.01:
+    r = move_to(target_xyz=[0.1975, 0.4025, 0.99], max_steps=400, timeout_seconds=60, tolerance_xyz=[0.012, 0.012, 0.012])
+    print("m1", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+    r = move_to(target_xyz=[0.1975, 0.4025, 0.95], max_steps=400, timeout_seconds=60, tolerance_xyz=[0.012, 0.012, 0.012])
+    print("m2", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+    r = gripper_open()
+    print("open", r["status"])
+    r = move_to(target_xyz=[0.1975, 0.4025, 1.05], max_steps=400, timeout_seconds=60, tolerance_xyz=[0.015, 0.015, 0.015])
+    print("m3", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+    s2 = observe()
+    print("gp2", s2["state"]["gripper_positions"], "ee2", s2["state"]["end_effector_position"])
+    v = verify("sort_objects", order=["cereal", "bread", "milk", "can"])
+    print("verify", v["status"])
+    print(v)
+else:
+    print("gripper not holding; abort")

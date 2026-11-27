@@ -1,0 +1,30 @@
+s = observe()
+r = inspect_region(bbox_xyxy=[88,250,152,318], sequence=s["state"]["perception"]["sequence"])
+p = r["result"]["perception"]
+print("ok", p["ok"], p["count"], p["pixel_count"])
+if not p["ok"]:
+    stop()
+g = resting_geometry(p["points"], support_z=0.82)
+print("geo", g["top_center"], g["z_top"], g["height"], g["span_xy"])
+ztop = g["z_top"]
+n = 0
+sx = 0.0
+sy = 0.0
+for q in p["points"]:
+    if q[2] > ztop - 0.012:
+        n = n + 1
+        sx = sx + q[0]
+        sy = sy + q[1]
+mx = sx / n
+my = sy / n
+cxx = 0.0
+cyy = 0.0
+cxy = 0.0
+for q in p["points"]:
+    if q[2] > ztop - 0.012:
+        dx = q[0] - mx
+        dy = q[1] - my
+        cxx = cxx + dx * dx
+        cyy = cyy + dy * dy
+        cxy = cxy + dx * dy
+print("top n", n, "mean", mx, my, "cov", cxx / n, cyy / n, cxy / n)

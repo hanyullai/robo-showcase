@@ -1,0 +1,10 @@
+tol = [0.015, 0.015, 0.015]
+r = move_to(target_xyz=[0.19, 0.395, 0.95], tolerance_xyz=tol, max_steps=200, timeout_seconds=60, settle_steps=5)
+print("lower", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+gripper_open()
+r = move_to(target_xyz=[0.19, 0.395, 1.08], tolerance_xyz=[0.02, 0.02, 0.02], max_steps=200, timeout_seconds=60, settle_steps=20)
+print("retreat", r["result"]["motion"]["reached"], r["result"]["motion"]["cycles"])
+s = observe()
+print("ee", s["state"]["end_effector_position"], s["state"]["gripper_positions"])
+v = verify("sort_objects")
+print("verify", v)
