@@ -32,7 +32,7 @@ Only curated recordings, generated policies and result summaries are published. 
 
 ## Interaction
 
-- Four experiment tabs with keyboard arrow / Home / End navigation.
+- Five experiment tabs with keyboard arrow / Home / End navigation.
 - Original policy selector, download and copy.
 - English / Chinese interface.
 - User-controlled video playback and reduced-motion support.
@@ -43,3 +43,13 @@ Main project: https://github.com/hxx90/coding-agent-harness/tree/codex/robo-hard
 ## Advanced challenge previews
 
 Desk sorting with revised instructions, object-displacement recovery, and tower rebuilding are labeled as proposed, unverified scenarios. Their illustrations are schematics, not simulator recordings or evidence of completion. The four verified experiment records remain separate.
+
+## Four-object ordered sorting (2026-11-27)
+
+The latest selected real CLI run completed can, milk, bread and cereal in that
+order, passed independent checks and model-directed stop/lease release. It took
+27 model requests and 417.4 seconds, with 3 motion failures recovered by the model.
+All 10 original policies are included. The 96.55-second browser video joins every
+recording segment chronologically, including failed actions, and excludes model
+waiting. H1 was enabled. Full sorting is now verified for this one scene; mid-task
+instruction changes remain a separate unverified challenge.

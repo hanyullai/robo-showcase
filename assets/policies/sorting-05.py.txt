@@ -1,0 +1,37 @@
+s = observe()
+r = inspect_region(bbox_xyxy=[116, 212, 152, 276], sequence=s["sequence"])
+p = r["result"]["perception"]
+g = resting_geometry(p["points"], support_z=0.82)
+print("milk geom", g["ok"], g["count"], g["top_center"], g["grasp"], g["span_xy"])
+cx = g["top_center"][0] - 0.005
+cy = g["top_center"][1]
+gz = max(g["grasp"][2] - 0.01, 0.88)
+safe = 1.08
+dest = [0.0025, 0.1575]
+r = gripper_open()
+r = move_to(target_xyz=[cx, cy, safe], target_yaw_rad=0.0, max_steps=200, tolerance_orientation_rad=0.1)
+print("above", r["result"]["motion"]["reached"])
+r = move_to(target_xyz=[cx, cy, gz], target_yaw_rad=0.0, max_steps=200, tolerance_orientation_rad=0.1)
+print("down", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+r = gripper_close()
+s = observe()
+gp = s["state"]["gripper_positions"]
+print("grip", gp)
+r = move_to(target_xyz=[cx, cy, safe], max_steps=200, tolerance_xyz=[0.015, 0.015, 0.015], settle_steps=10)
+s = observe()
+gp = s["state"]["gripper_positions"]
+print("lifted", s["state"]["end_effector_position"], gp)
+if gp[0] - gp[1] < 0.005:
+    print("empty gripper")
+else:
+    r = move_to(target_xyz=[dest[0], dest[1], safe], max_steps=300, tolerance_xyz=[0.015, 0.015, 0.015], settle_steps=10)
+    print("over dest", r["result"]["motion"]["reached"])
+    r = move_to(target_xyz=[dest[0], dest[1], gz + 0.03], max_steps=300, tolerance_xyz=[0.015, 0.015, 0.012], settle_steps=10)
+    print("lower", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+    r = gripper_open()
+    r = move_to(target_xyz=[dest[0], dest[1], safe], max_steps=200, tolerance_xyz=[0.02, 0.02, 0.015], settle_steps=10)
+    r = move_to(target_xyz=[0.1, 0.0, 1.05], max_steps=300, tolerance_xyz=[0.015, 0.015, 0.015], settle_steps=20)
+    print("retreat", r["result"]["motion"]["reached"])
+v = verify("sort_objects")
+for c in v["checks"]:
+    print(c["name"], c["status"], c["observed"])

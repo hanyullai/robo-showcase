@@ -1,0 +1,31 @@
+cx = 0.164
+cy = -0.166
+safe = 1.08
+dest = [0.1975, 0.1575]
+r = move_to(target_xyz=[cx, cy, safe], target_yaw_rad=1.5708, max_steps=150, tolerance_orientation_rad=0.1, settle_steps=10)
+print("above", r["result"]["motion"]["reached"])
+r = move_to(target_xyz=[cx, cy, 0.85], target_yaw_rad=1.5708, max_steps=250, tolerance_xyz=[0.01, 0.01, 0.012], tolerance_orientation_rad=0.1, settle_steps=10)
+print("down", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+r = gripper_close()
+s = observe()
+print("grip", s["state"]["gripper_positions"])
+r = move_to(target_xyz=[cx, cy, safe], max_steps=200, tolerance_xyz=[0.015, 0.015, 0.015], settle_steps=10)
+s = observe()
+gp = s["state"]["gripper_positions"]
+print("lifted", s["state"]["end_effector_position"], gp)
+if gp[0] - gp[1] < 0.005:
+    print("empty gripper")
+else:
+    r = move_to(target_xyz=[dest[0], dest[1], safe], max_steps=300, tolerance_xyz=[0.015, 0.015, 0.015], settle_steps=10)
+    print("over dest", r["result"]["motion"]["reached"])
+    s = observe()
+    print("still held", s["state"]["gripper_positions"])
+    r = move_to(target_xyz=[dest[0], dest[1], 0.90], max_steps=300, tolerance_xyz=[0.015, 0.015, 0.015], settle_steps=10)
+    print("lower", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+    r = gripper_open()
+    r = move_to(target_xyz=[dest[0], dest[1], safe], max_steps=200, tolerance_xyz=[0.02, 0.02, 0.015], settle_steps=10)
+    r = move_to(target_xyz=[0.1, 0.0, 1.05], max_steps=300, tolerance_xyz=[0.015, 0.015, 0.015], settle_steps=20)
+    print("retreat", r["result"]["motion"]["reached"])
+v = verify("sort_objects")
+for c in v["checks"]:
+    print(c["name"], c["status"], c["observed"])

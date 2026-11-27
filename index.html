@@ -12,8 +12,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <title>ROBO — Language in. Motion out.</title>
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
-  <link rel="stylesheet" href="style.css?v=3">
-  <script type="module" src="app.js?v=3"></script>
+  <link rel="stylesheet" href="style.css?v=4">
+  <script type="module" src="app.js?v=4"></script>
 </head>
 <body>
 <a class="skip" href="#experiments">Skip to experiments</a>
@@ -36,9 +36,9 @@
     <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
     <div class="coordinate coordinate-top" aria-hidden="true">X −0.048<br>Y +0.012<br>Z +0.892</div>
     <div class="film-shell">
-      <div class="film-topline"><span><i></i> <span data-i18n="fieldRecording">FIELD RECORDING / 004</span></span><span class="mono">PANDA · RGB-D</span></div>
-      <div class="hero-film"><video id="hero-video" src="assets/video/resume.mp4" poster="assets/images/resume.jpg" muted loop playsinline preload="metadata" aria-label="Recorded autonomous Stack run after interruption"></video><div class="film-corners" aria-hidden="true"></div><span class="frame-tag" data-i18n="simulation">SIMULATION REPLAY</span></div>
-      <div class="film-bottomline"><span class="verified-icon">✓</span><div><strong data-i18n="heroFilmTitle">Stack. Pause. Resume.</strong><span data-i18n="heroFilmSub">A new policy. The same unfinished task.</span></div><button id="hero-toggle" type="button" class="round-button" aria-label="Play hero recording">▶</button></div>
+      <div class="film-topline"><span><i></i> <span data-i18n="fieldRecording">FIELD RECORDING / 005</span></span><span class="mono">PANDA · RGB-D</span></div>
+      <div class="hero-film"><video id="hero-video" src="assets/video/sorting.mp4" poster="assets/images/sorting.jpg" muted loop playsinline preload="metadata" aria-label="Recorded autonomous four-object ordered sorting"></video><div class="film-corners" aria-hidden="true"></div><span class="frame-tag" data-i18n="simulation">SIMULATION REPLAY</span></div>
+      <div class="film-bottomline"><span class="verified-icon">✓</span><div><strong data-i18n="heroFilmTitle">Four objects. One order.</strong><span data-i18n="heroFilmSub">Written by the agent. Checked object by object.</span></div><button id="hero-toggle" type="button" class="round-button" aria-label="Play hero recording">▶</button></div>
     </div>
     <div class="proof-chip"><span class="status-dot"></span><span data-i18n="independentlyVerified">INDEPENDENTLY VERIFIED</span><span>↗</span></div>
   </div>
@@ -82,6 +82,7 @@
     <button role="tab" id="tab-stack" aria-controls="experiment-panel" aria-selected="false" tabindex="-1" data-task="stack"><span class="tab-index">02</span><div><strong>Stack</strong><span data-i18n="stackTag">Precision & balance</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
     <button role="tab" id="tab-pickplace" aria-controls="experiment-panel" aria-selected="false" tabindex="-1" data-task="pickplace"><span class="tab-index">03</span><div><strong>Pick & Place</strong><span data-i18n="pickplaceTag">A place for everything</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
     <button role="tab" id="tab-resume" aria-controls="experiment-panel" aria-selected="true" tabindex="0" data-task="resume"><span class="tab-index">04</span><div><strong>Pause → Resume</strong><span data-i18n="resumeTag">Finish what you started</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
+    <button role="tab" id="tab-sorting" aria-controls="experiment-panel" aria-selected="false" tabindex="-1" data-task="sorting"><span class="tab-index">05</span><div><strong>Four Objects</strong><span data-i18n="sortingTag">Every object. In order.</span></div><span class="tab-arrow" aria-hidden="true">↗</span></button>
   </div>
   <div class="experiment-panel" id="experiment-panel" role="tabpanel" aria-labelledby="tab-resume">
     <div class="run-screen">

@@ -1,0 +1,13 @@
+dest = [0.1975, 0.4025]
+r = move_to(target_xyz=[dest[0], dest[1], 0.93], max_steps=300, tolerance_xyz=[0.015, 0.015, 0.012], settle_steps=10)
+m = r["result"]["motion"]
+print("lower", m["reached"], m["error_xyz"])
+r = gripper_open()
+s = observe()
+print("open", s["state"]["gripper_positions"], s["state"]["end_effector_position"])
+r = move_to(target_xyz=[dest[0], dest[1], 1.03], max_steps=200, tolerance_xyz=[0.02, 0.02, 0.015], settle_steps=10)
+print("up", r["result"]["motion"]["reached"])
+r = move_to(target_xyz=[0.1, 0.0, 1.05], max_steps=300, tolerance_xyz=[0.015, 0.015, 0.015], settle_steps=20)
+print("retreat", r["result"]["motion"]["reached"])
+v = verify("sort_objects")
+print("verify", v["status"], v)

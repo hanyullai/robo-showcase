@@ -5,7 +5,7 @@ const sourceCache = new Map();
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let language = 'en';
 try { language = localStorage.getItem('robo-language') === 'zh' ? 'zh' : 'en'; } catch { /* Storage is optional. */ }
-let selected = runs.find((run) => run.id === 'resume');
+let selected = runs.find((run) => run.id === 'sorting');
 let source = '';
 let sourceVersion = 0;
 let toastTimer;
@@ -15,13 +15,14 @@ const originalText = new Map([...document.querySelectorAll('[data-i18n]')].map((
 const zh = {
   navWork:'实验现场',navSystem:'如何运作',navEvidence:'结果证据',eyebrow:'具身智能实验室',
   hero1:'语言输入。',hero2:'行动输出。',heroDescription:'让 agent 自己写策略、操作机械臂，<br>再用独立验证证明结果。',watch:'进入实验现场',how:'看看它如何运作',heroNote:'真实 AGENT 实跑 · MUJOCO 仿真<br>不是预先编排的成功动画',
-  fieldRecording:'实验录像 / 004',simulation:'仿真录像回放',heroFilmTitle:'叠放。暂停。继续。',heroFilmSub:'重新生成策略，完成尚未完成的任务。',independentlyVerified:'独立验证通过',stripLabel:'从自然语言到实际动作',
+  fieldRecording:'实验录像 / 005',simulation:'仿真录像回放',heroFilmTitle:'四件物品。指定顺序。',heroFilmSub:'自主写策略，逐件验证完成。',independentlyVerified:'独立验证通过',stripLabel:'从自然语言到实际动作',
   workEyebrow:'01 / 实验现场',workTitle:'少一点描述。<br>多一点行动。',workDescription:'选择一项任务，看真实的执行过程。<br>然后打开驱动它的原始策略代码。',liftTag:'第一次抓起物体',stackTag:'精确放置，保持稳定',pickplaceTag:'把物体送到指定位置',resumeTag:'停得下来，也能继续',actualFootage:'真实仿真器录像',generatedPolicy:'模型自主生成的 POLICY',copy:'复制',original:'原始文件 ↗',codeNote:'保留模型生成的原文，未经人工修正。',metricResult:'独立任务验证',metricTime:'任务实际耗时',metricCalls:'模型请求次数',metricMotion:'移动到位次数',details:'运行记录 +',originalVideo:'查看原始录像 ↗',selectionNote:'这里展示精选成功记录，不代表总体成功率。录像仅包含仿真时段，不包含模型等待；不同记录的模型与协议不同。所有演示均为仿真，尚不代表真实机械臂验收。',
   systemEyebrow:'02 / 如何运作',systemTitle:'智能需要闭环。<br>结果需要证据。',sense:'观察当前世界。',senseText:'通过 RGB-D 和相机标定获得可计算的几何信息，让行动有据可依。',plan:'写出下一步。',planText:'语言模型自主生成 Python 策略，并根据执行反馈修正下一步。',act:'让控制可控。',actText:'独立运行时管理武装、租约、逐周期反馈控制和用户中断。',verify:'核对真实结果。',verifyText:'独立任务检查确认结果，停止回执和租约释放完成收尾。',
   recoveryEyebrow:'03 / 一次真实的暂停',recoveryTitle:'暂停动作。<br>继续完成。',recoveryDescription:'移动途中，操作者按下停止。<br>Agent 必须根据此刻的状态重新出发。',stopMetric:'本次测得的停止 ACK',stopNote:'一次本地仿真测量。<br>不代表实时性保证。',log1:'运动被中断',log1Text:'停止 ACK 确认，随后五秒没有新增运动。',log2:'重新观察当前状态',log2Text:'旧租约被拒绝，agent 自行申请了新租约。',log3:'新策略，完成叠放',log3Text:'恢复后的十次移动均到位，两次任务验证通过。',log4:'明确完成收尾',log4Text:'Agent 主动停止、确认 ACK，并释放租约。',evidenceNote:'每一个结果，都有对应的记录。',inspectEvidence:'查看运行数据与文件哈希 ↗',
   closingEyebrow:'开放代码，可观察行为。',closingTitle:'给语言<br>一双行动的手<span class="accent">。</span>',exploreSource:'查看项目源码',runLocally:'在 Mac 上运行 ↗',setupNote:'需要先安装项目并配置模型与仿真器，详见运行手册。',footer:'独立具身智能项目。',footerStatus:'持续开放构建'
 };
 Object.assign(zh, {
+  sortingTag:'四件物品，按序完成',
   "navChallenges": "进阶挑战",
   "seeChallenges": "不止一次抓取 ↗",
   "challengeEyebrow": "NEXT / 更难的挑战",
@@ -83,7 +84,7 @@ async function loadPolicy(index=0){
   }
 }
 function renderRunText(){
-  const info=descriptions[selected.id];$('#run-title').textContent=info.title;$('#run-seed').textContent=`SEED ${selected.seed}`;$('#run-prompt').textContent=info.prompt[language];$('#run-notes').textContent=info.notes[language];
+  const info=descriptions[selected.id]||selected.presentation;$('#run-title').textContent=info.title;$('#run-seed').textContent=`SEED ${selected.seed}`;$('#run-prompt').textContent=info.prompt[language];$('#run-notes').textContent=info.notes[language];
   $('#metric-result').innerHTML=(language==='zh'?'通过':'PASSED')+' <i>↗</i>';
   $('#metric-time').innerHTML=`${selected.elapsed_seconds.toFixed(1)} <small>s</small>`;
   $('#metric-calls').textContent=selected.model_calls;$('#metric-motion').textContent=`${selected.control_reached} / ${selected.control_attempts}`;
@@ -99,7 +100,7 @@ async function selectRun(id,{autoplay=false}={}){
   $('#policy-select').replaceChildren(...selected.policies.map((policy,i)=>{const option=document.createElement('option');option.value=i;option.textContent=policy.label;return option;}));
   $('#run-details').hidden=true;$('#details-toggle').setAttribute('aria-expanded','false');renderRunText();
   const nextHash=selected.id==='resume'?'#experiments':`#run-${selected.id}`;if(autoplay){history.replaceState(null,'',nextHash);video.play().catch(()=>{});}
-  await loadPolicy();
+  const policyIndex=selected.default_policy||0;$('#policy-select').value=String(policyIndex);await loadPolicy(policyIndex);
 }
 function setLanguage(lang){
   language=lang;try{localStorage.setItem('robo-language',lang);}catch{/* Preference is optional. */}
@@ -126,6 +127,6 @@ $('#policy-select').addEventListener('change',event=>loadPolicy(Number(event.tar
 $('#details-toggle').addEventListener('click',()=>{$('#run-details').hidden=!$('#run-details').hidden;$('#details-toggle').setAttribute('aria-expanded',String(!$('#run-details').hidden));renderRunText();});
 const tabs=[...document.querySelectorAll('[data-task]')];
 for(const tab of tabs){tab.addEventListener('click',()=>selectRun(tab.dataset.task,{autoplay:true}));tab.addEventListener('keydown',event=>{const index=tabs.indexOf(tab);let target;if(event.key==='ArrowRight')target=tabs[(index+1)%tabs.length];if(event.key==='ArrowLeft')target=tabs[(index-1+tabs.length)%tabs.length];if(event.key==='Home')target=tabs[0];if(event.key==='End')target=tabs.at(-1);if(target){event.preventDefault();target.focus();selectRun(target.dataset.task,{autoplay:true});}});}
-const initialId=location.hash.startsWith('#run-')?location.hash.slice(5):'resume';
+const initialId=location.hash.startsWith('#run-')?location.hash.slice(5):'sorting';
 setLanguage(language);await selectRun(initialId);
 if(location.hash.startsWith('#run-'))$('#experiments').scrollIntoView({behavior:'instant'});
