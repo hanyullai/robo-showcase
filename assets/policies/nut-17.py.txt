@@ -1,0 +1,11 @@
+s = observe()
+ee = s["state"]["end_effector_position"]
+r = move_to(target_xyz=[0.2, 0.12, 1.06], target_yaw_rad=1.6, max_steps=300)
+print("back", r["result"]["motion"]["reached"])
+for y in [2.2, 2.7, 3.1]:
+    r = move_to(target_xyz=[0.2, 0.16, 1.06], target_yaw_rad=y, max_steps=300)
+    print("yaw", y, r["result"]["motion"]["reached"])
+r = move_to(target_xyz=[0.226, 0.169, 1.06], target_yaw_rad=3.1, max_steps=300)
+print("over", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+s = observe()
+print("ee", s["state"]["end_effector_position"], "grip", s["state"]["gripper_positions"], "q", s["state"]["joint_positions"])

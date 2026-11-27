@@ -1,0 +1,13 @@
+s = observe()
+r = inspect_region(bbox_xyxy=[330, 155, 465, 250], sequence=s["state"]["perception"]["sequence"])
+p = r["result"]["perception"]
+pts = p["points"]
+print("ok", p["ok"], p["count"], p["pixel_count"], p["centroid"])
+line = []
+for q in pts:
+    if q[2] > 0.849:
+        line.append([round(q[0], 3), round(q[1], 3)])
+    if len(line) >= 12:
+        print(line)
+        line = []
+print(line)

@@ -1,0 +1,21 @@
+gx = -0.0868
+gy = 0.220
+yaw = -0.40
+s = observe()
+ee = s["state"]["end_effector_position"]
+gripper_open()
+r = move_to(target_xyz=[ee[0], ee[1], 1.0], target_yaw_rad=yaw, max_steps=400, timeout_seconds=120, tolerance_orientation_rad=0.08)
+print("rot", r["result"]["motion"]["reached"], r["result"]["motion"]["orientation_error_rad"])
+r = move_to(target_xyz=[gx, gy, 1.0], target_yaw_rad=yaw, max_steps=400, timeout_seconds=120, tolerance_orientation_rad=0.08)
+print("above", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+r = move_to(target_xyz=[gx, gy, 0.90], target_yaw_rad=yaw, max_steps=300, timeout_seconds=120, tolerance_orientation_rad=0.08)
+print("pre", r["result"]["motion"]["reached"])
+r = move_to(target_xyz=[gx, gy, 0.835], target_yaw_rad=yaw, max_steps=300, timeout_seconds=120, tolerance_orientation_rad=0.08)
+print("grasp", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+gripper_close()
+s = observe()
+print("grip", s["state"]["gripper_positions"])
+r = move_to(target_xyz=[gx, gy, 1.0], target_yaw_rad=yaw, max_steps=300, timeout_seconds=120, tolerance_orientation_rad=0.08)
+print("lift", r["result"]["motion"]["reached"])
+s = observe()
+print("ee", s["state"]["end_effector_position"], "grip", s["state"]["gripper_positions"])

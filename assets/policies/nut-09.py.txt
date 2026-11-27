@@ -1,0 +1,33 @@
+allp = []
+for b in [[335, 160, 400, 245], [395, 160, 460, 245]]:
+    s = observe()
+    r = inspect_region(bbox_xyxy=b, sequence=s["state"]["perception"]["sequence"])
+    for q in r["result"]["perception"]["points"]:
+        if q[2] > 0.849:
+            allp = allp + [q]
+mx = 0
+my = 0
+n = 0
+for q in allp:
+    mx = mx + q[0]
+    my = my + q[1]
+    n = n + 1
+mx = mx / n
+my = my / n
+print("n", n, "mean", round(mx, 4), round(my, 4))
+for k in range(0, 180, 5):
+    a = k * 3.14159265 / 180
+    c = 1 - a ** 2 / 2 + a ** 4 / 24 - a ** 6 / 720 + a ** 8 / 40320 - a ** 10 / 3628800 + a ** 12 / 479001600
+    sn = a - a ** 3 / 6 + a ** 5 / 120 - a ** 7 / 5040 + a ** 9 / 362880 - a ** 11 / 39916800 + a ** 13 / 6227020800
+    pmin = 9
+    pmax = -9
+    qmin = 9
+    qmax = -9
+    for q in allp:
+        p = (q[0] - mx) * c + (q[1] - my) * sn
+        w = (q[1] - my) * c - (q[0] - mx) * sn
+        pmin = min(pmin, p)
+        pmax = max(pmax, p)
+        qmin = min(qmin, w)
+        qmax = max(qmax, w)
+    print(k, round(pmax - pmin, 4), round(qmax - qmin, 4), round(pmin, 4), round(pmax, 4), round(qmin, 4), round(qmax, 4))

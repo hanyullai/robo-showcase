@@ -1,0 +1,27 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+boxes = [[345, 135, 435, 208], [428, 162, 462, 198], [365, 150, 415, 185]]
+for b in boxes:
+    r = inspect_region(bbox_xyxy=b, sequence=seq)
+    p = r["result"]["perception"]
+    pts = p["points"]
+    n = len(pts)
+    if n == 0:
+        print(b, "none")
+        continue
+    mn = [9, 9, 9]
+    mx = [-9, -9, -9]
+    sm = [0, 0, 0]
+    for q in pts:
+        for i in range(3):
+            mn[i] = min(mn[i], q[i])
+            mx[i] = max(mx[i], q[i])
+            sm[i] = sm[i] + q[i]
+    print(b, p["ok"], n, "min", [round(v, 4) for v in mn], "max", [round(v, 4) for v in mx], "mean", [round(v / n, 4) for v in sm])
+    hi = []
+    for q in pts:
+        if q[2] > mx[2] - 0.006:
+            hi.append(q)
+    xs = [q[0] for q in hi]
+    ys = [q[1] for q in hi]
+    print(" top n", len(hi), "x", round(min(xs), 4), round(max(xs), 4), "y", round(min(ys), 4), round(max(ys), 4))

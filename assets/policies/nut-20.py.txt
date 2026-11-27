@@ -1,0 +1,36 @@
+s = observe()
+r = inspect_region(bbox_xyxy=[328, 310, 462, 425], sequence=s["state"]["perception"]["sequence"])
+pts = r["result"]["perception"]["points"]
+zt = -9
+for q in pts:
+    zt = max(zt, q[2])
+x0 = 9
+x1 = -9
+y0 = 9
+y1 = -9
+n = 0
+for q in pts:
+    if q[2] > zt - 0.006:
+        n = n + 1
+        x0 = min(x0, q[0])
+        x1 = max(x1, q[0])
+        y0 = min(y0, q[1])
+        y1 = max(y1, q[1])
+print("ring ztop", round(zt, 4), "n", n, "x", round(x0, 4), round(x1, 4), "y", round(y0, 4), round(y1, 4))
+s = observe()
+r = inspect_region(bbox_xyxy=[362, 362, 405, 390], sequence=s["state"]["perception"]["sequence"])
+pts = r["result"]["perception"]["points"]
+x0 = 9
+x1 = -9
+y0 = 9
+y1 = -9
+z0 = 9
+z1 = -9
+for q in pts:
+    x0 = min(x0, q[0])
+    x1 = max(x1, q[0])
+    y0 = min(y0, q[1])
+    y1 = max(y1, q[1])
+    z0 = min(z0, q[2])
+    z1 = max(z1, q[2])
+print("peg n", len(pts), "x", round(x0, 4), round(x1, 4), "y", round(y0, 4), round(y1, 4), "z", round(z0, 4), round(z1, 4))

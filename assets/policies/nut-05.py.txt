@@ -1,0 +1,44 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+boxes = [[345, 135, 435, 208], [428, 162, 462, 198], [365, 150, 415, 185], [348, 358, 412, 476]]
+for b in boxes:
+    r = inspect_region(bbox_xyxy=b, sequence=seq)
+    p = r["result"]["perception"]
+    pts = p["points"]
+    n = len(pts)
+    if n == 0:
+        print(b, "none")
+        continue
+    x0 = 9
+    x1 = -9
+    y0 = 9
+    y1 = -9
+    z0 = 9
+    z1 = -9
+    sx = 0
+    sy = 0
+    sz = 0
+    for q in pts:
+        x0 = min(x0, q[0])
+        x1 = max(x1, q[0])
+        y0 = min(y0, q[1])
+        y1 = max(y1, q[1])
+        z0 = min(z0, q[2])
+        z1 = max(z1, q[2])
+        sx = sx + q[0]
+        sy = sy + q[1]
+        sz = sz + q[2]
+    print(b, p["ok"], n, "x", round(x0, 4), round(x1, 4), "y", round(y0, 4), round(y1, 4), "z", round(z0, 4), round(z1, 4), "mean", round(sx / n, 4), round(sy / n, 4), round(sz / n, 4))
+    tx0 = 9
+    tx1 = -9
+    ty0 = 9
+    ty1 = -9
+    tn = 0
+    for q in pts:
+        if q[2] > z1 - 0.006:
+            tn = tn + 1
+            tx0 = min(tx0, q[0])
+            tx1 = max(tx1, q[0])
+            ty0 = min(ty0, q[1])
+            ty1 = max(ty1, q[1])
+    print(" top n", tn, "x", round(tx0, 4), round(tx1, 4), "y", round(ty0, 4), round(ty1, 4))

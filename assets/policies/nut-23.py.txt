@@ -1,0 +1,10 @@
+s = observe()
+p = s["state"]["end_effector_position"]
+print("ee1", p, s["state"]["gripper_positions"])
+r = move_to(target_xyz=[p[0], p[1], 1.02], target_yaw_rad=3.1, tolerance_xyz=[0.01, 0.01, 0.01], max_steps=150)
+m = r["result"]["motion"]
+print("up", m["reached"], m["reason"], m["error_max_m"])
+s = observe()
+print("ee2", s["state"]["end_effector_position"])
+v = verify("assemble_nut")
+print("verify", v["status"])

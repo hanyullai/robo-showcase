@@ -1,0 +1,6 @@
+r = move_to(target_xyz=[0.23, 0.154, 1.0], target_yaw_rad=3.1, max_steps=200)
+print("align", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+r = move_to(target_xyz=[0.23, 0.154, 0.965], target_yaw_rad=3.1, max_steps=200, tolerance_xyz=[0.004, 0.004, 0.006])
+print("pre", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+s = observe()
+print("ee", s["state"]["end_effector_position"], "grip", s["state"]["gripper_positions"])

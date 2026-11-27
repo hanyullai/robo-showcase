@@ -1,0 +1,11 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+print("seq", seq)
+r1 = inspect_region(bbox_xyxy=[345, 135, 435, 208], sequence=seq)
+p1 = r1["result"]["perception"]
+print("ring ok", p1["ok"], p1["count"])
+print(p1["points"])
+r2 = inspect_region(bbox_xyxy=[428, 162, 462, 198], sequence=seq)
+p2 = r2["result"]["perception"]
+print("handle ok", p2["ok"], p2["count"])
+print(p2["points"])

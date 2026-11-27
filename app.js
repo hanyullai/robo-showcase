@@ -1,11 +1,11 @@
-import { runs } from './assets/runs.js?v=5';
+import { runs } from './assets/runs.js?v=6';
 
 const $ = (selector) => document.querySelector(selector);
 const sourceCache = new Map();
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let language = 'en';
 try { language = localStorage.getItem('robo-language') === 'zh' ? 'zh' : 'en'; } catch { /* Storage is optional. */ }
-let selected = runs.find((run) => run.id === 'sorting');
+let selected = runs.find((run) => run.id === 'nut');
 let source = '';
 let sourceVersion = 0;
 let toastTimer;
@@ -22,6 +22,7 @@ const zh = {
   closingEyebrow:'开放代码，可观察行为。',closingTitle:'给语言<br>一双行动的手<span class="accent">。</span>',exploreSource:'查看项目源码',runLocally:'在 Mac 上运行 ↗',setupNote:'需要先安装项目并配置模型与仿真器，详见运行手册。',footer:'独立具身智能项目。',footerStatus:'持续开放构建'
 };
 Object.assign(zh, {
+  nutTag:'抓取、对孔、套入',
   replanTag:'暂停、改优先级、继续完成',
   replanVerified:'实跑已验证',
   watchReplan:'真实录像 / 观看完整实跑 ↗',
@@ -132,7 +133,7 @@ $('#policy-select').addEventListener('change',event=>loadPolicy(Number(event.tar
 $('#details-toggle').addEventListener('click',()=>{$('#run-details').hidden=!$('#run-details').hidden;$('#details-toggle').setAttribute('aria-expanded',String(!$('#run-details').hidden));renderRunText();});
 const tabs=[...document.querySelectorAll('[data-task]')];
 for(const tab of tabs){tab.addEventListener('click',()=>selectRun(tab.dataset.task,{autoplay:true}));tab.addEventListener('keydown',event=>{const index=tabs.indexOf(tab);let target;if(event.key==='ArrowRight')target=tabs[(index+1)%tabs.length];if(event.key==='ArrowLeft')target=tabs[(index-1+tabs.length)%tabs.length];if(event.key==='Home')target=tabs[0];if(event.key==='End')target=tabs.at(-1);if(target){event.preventDefault();target.focus();selectRun(target.dataset.task,{autoplay:true});}});}
-const initialId=location.hash.startsWith('#run-')?location.hash.slice(5):'sorting';
+const initialId=location.hash.startsWith('#run-')?location.hash.slice(5):'nut';
 setLanguage(language);await selectRun(initialId);
 if(location.hash.startsWith('#run-'))$('#experiments').scrollIntoView({behavior:'instant'});
 

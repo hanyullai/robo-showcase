@@ -1,0 +1,10 @@
+x = 0.233
+y = 0.153
+r = move_to(target_xyz=[x, y, 0.962], target_yaw_rad=3.1, max_steps=150, tolerance_xyz=[0.003, 0.003, 0.006])
+print("xy", r["result"]["motion"]["reached"], r["result"]["motion"]["error_xyz"])
+for z in [0.945, 0.925, 0.905, 0.885, 0.865]:
+    r = move_to(target_xyz=[x, y, z], target_yaw_rad=3.1, max_steps=150, tolerance_xyz=[0.004, 0.004, 0.008])
+    m = r["result"]["motion"]
+    print(z, m["reached"], m["error_xyz"])
+s = observe()
+print("ee", s["state"]["end_effector_position"], "grip", s["state"]["gripper_positions"])

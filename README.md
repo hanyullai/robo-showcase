@@ -26,13 +26,13 @@ GitHub Pages: deploy the `main` branch, repository root. `.nojekyll` ensures ass
 - `evidence/stack-resume-original.mp4`: original latest recovery recording.
 - Earlier original recordings and broader project documentation are linked to the source repository.
 
-Videos contain simulation frames and omit time spent waiting for the model. Task wall time is shown separately. The older Lift and Stack runs use historical bounded protocols; PickPlace and recovery use continuous protocols. The four newest records used H1; the three earlier records did not. Do not treat these records as a paired comparison.
+Videos contain simulation frames and omit time spent waiting for the model. Task wall time is shown separately. The older Lift and Stack runs use historical bounded protocols; PickPlace and recovery use continuous protocols. The five newest records had H1 enabled; the three earlier records did not. The nut run made no H1 helper call. Do not treat these records as a paired comparison.
 
 Only curated recordings, generated policies and result summaries are published. Full model conversations, credentials, machine paths and private runtime logs are not included.
 
 ## Interaction
 
-- Seven experiment tabs with keyboard arrow / Home / End navigation.
+- Eight experiment tabs with keyboard arrow / Home / End navigation.
 - Original policy selector, download and copy.
 - English / Chinese interface.
 - User-controlled video playback and reduced-motion support.
@@ -75,3 +75,18 @@ runtime records; its wall-clock timeline is in `evidence/runs.json`.
 Task/order success, control receipts and model-versus-fallback cleanup are
 reported separately. Source file hashes identify the locally modified candidate.
 These two selected demonstrations are not an aggregate benchmark or comparison.
+
+## Square-nut assembly (2026-11-27)
+
+One real autonomous CLI journey at seed 2802 passed native success, square-peg
+containment through the nut bore, seating height, release/retreat and 20-cycle
+stability. Both internal and external checks passed, followed by model-directed
+stop ACK and lease release. 54 requests / 853.1 seconds; 20 of 24 executed target
+moves reached. One additional target-move call had invalid parameters and did
+not move. All 23 policies and 9 chronological video segments are preserved.
+
+The agent corrected syntax and stale-crop errors, changed grasp orientation
+after motion failures, and recovered after a post-release parameter error. The
+controller and verification thresholds were not changed. H1 was available but
+not called. Two earlier trials were blocked by upstream content_filter before
+physical action; this selected success is not a benchmark success rate.

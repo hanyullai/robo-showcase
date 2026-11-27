@@ -1,0 +1,7 @@
+s = observe()
+ee = s["state"]["end_effector_position"]
+for y in [1.0, 1.57, 2.2, 2.74]:
+    r = move_to(target_xyz=[-0.09, 0.2, 1.0], target_yaw_rad=y, max_steps=300, timeout_seconds=60, tolerance_orientation_rad=0.06)
+    m = r["result"]["motion"]
+    s = observe()
+    print(y, m["reached"], round(m["orientation_error_rad"], 3), m["cycles"], "q7", round(s["state"]["joint_positions"][6], 3))

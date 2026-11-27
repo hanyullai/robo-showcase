@@ -1,0 +1,22 @@
+s = observe()
+r = inspect_region(bbox_xyxy=[360, 212, 512, 340], sequence=s["state"]["perception"]["sequence"])
+p = r["result"]["perception"]
+pts = p["points"]
+zt = -9
+for q in pts:
+    zt = max(zt, q[2])
+x0 = 9
+x1 = -9
+y0 = 9
+y1 = -9
+n = 0
+for q in pts:
+    if q[2] > zt - 0.004:
+        n = n + 1
+        x0 = min(x0, q[0])
+        x1 = max(x1, q[0])
+        y0 = min(y0, q[1])
+        y1 = max(y1, q[1])
+print("cnt", p["count"], "ztop", round(zt, 4), "n", n, "x", round(x0, 4), round(x1, 4), "y", round(y0, 4), round(y1, 4))
+ee = s["state"]["end_effector_position"]
+print("ee", ee)

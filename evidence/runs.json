@@ -669,6 +669,221 @@
       },
       "source_commit": "ff1f7843d2b245a07c97c102a580206edd5cb077",
       "source_includes_local_modifications": true
+    },
+    {
+      "id": "nut",
+      "date": "2026-11-27",
+      "seed": 2802,
+      "model": "claude-opus-5-5",
+      "elapsed_seconds": 853.1150677204132,
+      "model_calls": 54,
+      "actions": 30,
+      "camera_queries": 12,
+      "control_reached": 20,
+      "control_attempts": 24,
+      "protocol": "continuous",
+      "autonomous_success": true,
+      "actor_independent_verification": "passed",
+      "actor_stop_ack": true,
+      "actor_release": true,
+      "h1": "h1-v8-v9",
+      "input_tokens": 4391019,
+      "output_tokens": 49821,
+      "cached_tokens_reported": 0,
+      "policies": [
+        {
+          "path": "assets/policies/nut-01.py.txt",
+          "sha256": "ceae15e6de192212fb386d110cf4f35058147c29d8ea520899077ceb9f0a2b49",
+          "label": "Policy 01"
+        },
+        {
+          "path": "assets/policies/nut-02.py.txt",
+          "sha256": "4e9cc761f40692e91f6f4a94e962b34393d097d578ab86cdf2e3b631136c3c49",
+          "label": "Policy 02 · rejected"
+        },
+        {
+          "path": "assets/policies/nut-03.py.txt",
+          "sha256": "0097dd0356387e757998a435a3cffd1fc5cbb879c0131b55865d76fd29f91cad",
+          "label": "Policy 03 · rejected"
+        },
+        {
+          "path": "assets/policies/nut-04.py.txt",
+          "sha256": "1ae12a090a0c378e4177f742fea65cbf8b71debf3e3fea662b00f5b4c7d72c79",
+          "label": "Policy 04"
+        },
+        {
+          "path": "assets/policies/nut-05.py.txt",
+          "sha256": "5ac335ec813790bd44d138da552b2acafe520d260d9fe738d5c8bbabab8f8452",
+          "label": "Policy 05"
+        },
+        {
+          "path": "assets/policies/nut-06.py.txt",
+          "sha256": "6a1e8e5a253e6c90b98d297d3c0b16c4c385ba717f312161f8b91aeba663b881",
+          "label": "Policy 06"
+        },
+        {
+          "path": "assets/policies/nut-07.py.txt",
+          "sha256": "1aa1cfce0d9ac5c873b90ed5550f7841f1423835120215f4223d2124a442cb5b",
+          "label": "Policy 07"
+        },
+        {
+          "path": "assets/policies/nut-08.py.txt",
+          "sha256": "860698868ae1ea2de98cbed081c7d449ab73d41b5693ee7246f42810d01b9974",
+          "label": "Policy 08 · rejected"
+        },
+        {
+          "path": "assets/policies/nut-09.py.txt",
+          "sha256": "3fe4b92d5bbf0b9973c5aec88146ac53b95e6923d812e5356ff302fe0678ea6b",
+          "label": "Policy 09 · rejected"
+        },
+        {
+          "path": "assets/policies/nut-10.py.txt",
+          "sha256": "006843a27f6c7120c5b1141d5d7985175a1a72bf8e286cc9900a81b6015c05e3",
+          "label": "Policy 10"
+        },
+        {
+          "path": "assets/policies/nut-11.py.txt",
+          "sha256": "6ab051d374a00f357d55bcaeb4fbb9d46ac6967e30aa9e25c9155fdb0b7394e7",
+          "label": "Policy 11 · rejected"
+        },
+        {
+          "path": "assets/policies/nut-12.py.txt",
+          "sha256": "0149af8f968420bef02711da6c7b2bb71ad1a7bc6a4f6eb46d1104389b346a4e",
+          "label": "Policy 12"
+        },
+        {
+          "path": "assets/policies/nut-13.py.txt",
+          "sha256": "74f24f17283ddb3eb039886f14310b53c78f56749f9f8320602b6161cdd77398",
+          "label": "Policy 13"
+        },
+        {
+          "path": "assets/policies/nut-14.py.txt",
+          "sha256": "bf42dc0336c8ab03c699703a581b7f0634d882f8856357ddc617d2f0fc4e664f",
+          "label": "Policy 14"
+        },
+        {
+          "path": "assets/policies/nut-15.py.txt",
+          "sha256": "6ee97d5224f55fbf3fef9d436e80adac24742acbc736d8b061e4eb808a1d54ee",
+          "label": "Policy 15"
+        },
+        {
+          "path": "assets/policies/nut-16.py.txt",
+          "sha256": "74ecf6953390f855edbcfd732f34ed9e2b9ad158c8893e493348874ca3507ecd",
+          "label": "Policy 16"
+        },
+        {
+          "path": "assets/policies/nut-17.py.txt",
+          "sha256": "dc2aa17237641e0132ecde00474cfe6d2ef1d399e4baa3b386ae4929abf0ed25",
+          "label": "Policy 17"
+        },
+        {
+          "path": "assets/policies/nut-18.py.txt",
+          "sha256": "03d19ca466829788fae1c39c8536f213c592952ef1146af6171446bc73443c02",
+          "label": "Policy 18"
+        },
+        {
+          "path": "assets/policies/nut-19.py.txt",
+          "sha256": "cd84503c13fb2bdfc8caa4b4834e1877d031f6c0f938e93366015ad043088486",
+          "label": "Policy 19"
+        },
+        {
+          "path": "assets/policies/nut-20.py.txt",
+          "sha256": "69186f64e1102c5adba8914c687e746166d392bddff9baad6362866ec95bcd43",
+          "label": "Policy 20"
+        },
+        {
+          "path": "assets/policies/nut-21.py.txt",
+          "sha256": "e2e878c7b197786e565f50d80870993e157c036b21b796a8887dfc1474f91c1e",
+          "label": "Policy 21"
+        },
+        {
+          "path": "assets/policies/nut-22.py.txt",
+          "sha256": "091f29bf7f0c7e0f129479e8b79fadcf9741fa4ac9407931bbe3bed006422aa3",
+          "label": "Policy 22"
+        },
+        {
+          "path": "assets/policies/nut-23.py.txt",
+          "sha256": "f1c3bc3c0ee0c8364945edcd7ef708ec330c4bdfb7f7e318fdf2d9117fa1a0b6",
+          "label": "Policy 23"
+        }
+      ],
+      "video": "assets/video/nut.mp4",
+      "poster": "assets/images/nut.jpg",
+      "video_seconds": 89.5,
+      "original_video_sha256": "bdf78c24c62640558b61707f41ddd9f26db31e44ebe731ccb05b9e8fff81d7a2",
+      "web_video_sha256": "3cfd639091e5009ca58f8bdbe9877a71e4841aa068c83af88b399dddd681f65e",
+      "original_video": "assets/video/nut.mp4",
+      "task": "evidence/nut-task.txt",
+      "notes": "Seed 2802. 54 model requests, 853.1 s; 20/24 executed target moves reached, plus one move rejected for an invalid parameter. The agent corrected restricted-Python errors, refreshed stale visual crops, changed grasp orientation after failed approaches, then recovered from a parameter error after opening the gripper. All 23 original policies and 9 video segments are retained. Video is 89.5 s and excludes model waiting. Two previous trials were blocked by upstream content_filter before physical actions. Model, controller, H1 bundle and scorer were unchanged. H1 was available, but its helper was not called. One successful scene, not a success-rate estimate.",
+      "checks": [
+        {
+          "name": "official_nut_assembly",
+          "status": "passed",
+          "observed": true,
+          "expected": "Native NutAssemblySquare success"
+        },
+        {
+          "name": "peg_inside_seated_hole",
+          "status": "passed",
+          "observed": true,
+          "expected": "Square peg corners inside bore, upright within 5 degrees, nut center 0.825<z<0.845 m"
+        },
+        {
+          "name": "released_and_retreated",
+          "status": "passed",
+          "observed": true,
+          "expected": "Not grasped; TCP more than 0.06 m from nut"
+        },
+        {
+          "name": "stable_insertion",
+          "status": "passed",
+          "observed": true,
+          "expected": "20 cycles, <=2 mm / 2 degree peak-to-peak pose drift; verification advances no cycles"
+        }
+      ],
+      "source_hashes": {
+        "tests/core/hardware/test_runtime.py": "cce66778532597733c17ad2d881e0fe882a3f8f94b882449030df37f0f8ac611",
+        "tests/hardware_sim/test_pickplace_all.py": "736360713e9e9cf08fd7319e522f4c3566c8732645a693fdbf0f21456ad45b1f",
+        "tests/hardware_sim/test_target_pose.py": "ecf04d6fe3f3cc083d737915b4a0a64235883df1b482309983c3ebbde7159df8",
+        "vibe/core/hardware/runtime.py": "3db5ea97300f8f922bfad86766247b69624c7ae05409e1d3d370cf37ecdd4226",
+        "vibe/core/skills/builtins/vibe.py": "09cebd2e16b5f9d7db67c3793709725b45039eab2398dff359d429e2ac7c04ed",
+        "vibe/hardware_sim/_nut_assembly.py": "87db080ebb0af4b4963f361cf542a4b8852c3f88b389865ab3388f8f7226d7b1",
+        "vibe/hardware_sim/_pickplace_all.py": "b273448f817694ceb1207348c4f2aa419d748cbfc175d4bf60f997b9d4a31f91",
+        "vibe/hardware_sim/_pose_control.py": "526f3e6ff689b0d20a46cabe211d9700261ff32fd93f92eb7c84a49622604ff3",
+        "vibe/hardware_sim/_target_motion.py": "0abd59e7fec40e75c51d0b0c1bad400e1c4018693af7f7c010cfef7432163d8b",
+        "vibe/hardware_sim/adapter.py": "cfc21030e4688cc146ee7ffaaf6d3ee7c0e13c87ac4f49733be704ddb67ff607",
+        "vibe/hardware_sim/models.py": "359c640bd98c8b9b943734122326cb34125270dfe84b7d191733ec5e992f1ea0"
+      },
+      "process_lifetime_seconds": 856.1337661743164,
+      "task_success": true,
+      "operator_interruption": false,
+      "finish_reasons": {
+        "tool_calls": 52,
+        "stop": 2
+      },
+      "source_commit": "ff1f7843d2b245a07c97c102a580206edd5cb077",
+      "source_includes_local_modifications": true,
+      "default_policy": 14,
+      "helper_calls": 0,
+      "physical_commands_started": 30,
+      "parameter_rejections_without_motion": 1,
+      "prior_blocked_trials": 2,
+      "action_metric_definition": "Non-camera commands started, including one invalid move_to parameter call with no motion.",
+      "presentation": {
+        "title": "NUT ASSEMBLY / ALIGN & INSERT",
+        "prompt": {
+          "en": "“Fit the square nut onto its square peg. Release, retreat, verify independently, then stop and release the lease.”",
+          "zh": "“把方形螺母套到对应方柱上，松爪、撤离、独立验证，再停止并释放租约。”"
+        },
+        "outcome": {
+          "en": "Autonomous end-to-end pass: peg inside the bore, nut seated, released and stable. Both policy and external verification passed; model stop ACK and lease release confirmed.",
+          "zh": "自主全链路通过：方柱穿孔、螺母落座、松爪且稳定；策略内外验证通过，模型主动停止 ACK 和租约释放确认。"
+        },
+        "notes": {
+          "en": "Seed 2802. 54 model requests, 853.1 s; 20/24 executed target moves reached, plus one move rejected for an invalid parameter. The agent corrected restricted-Python errors, refreshed stale visual crops, changed grasp orientation after failed approaches, then recovered from a parameter error after opening the gripper. All 23 original policies and 9 video segments are retained. Video is 89.5 s and excludes model waiting. Two previous trials were blocked by upstream content_filter before physical actions. Model, controller, H1 bundle and scorer were unchanged. H1 was available, but its helper was not called. One successful scene, not a success-rate estimate.",
+          "zh": "Seed 2802。54 次模型请求、853.1 秒；实际执行的 24 次目标移动中 20 次到位，另有 1 次因参数错误被拒绝、未移动。模型自行修正受限 Python 错误、更新过期取点、在接近失败后改变抓手朝向，并从松爪后的参数错误中恢复。完整保留 23 份原始策略、9 段录像；合并录像 89.5 秒，不含模型等待。之前两次在物理动作前被上游 content_filter 阻断。模型、控制器、H1 包和评分器均未改；H1 可用但没有实际 helper 调用。这是一场成功记录，不代表成功率。"
+        }
+      }
     }
   ]
 }
