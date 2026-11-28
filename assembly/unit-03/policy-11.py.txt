@@ -1,0 +1,34 @@
+g = [-0.059, 0.1125]
+gy = 1.42
+gz = 0.832
+pl = [0.23, 0.0424]
+best = -1
+zs = [0.87, 0.89, 0.91]
+for zr in zs:
+    if best < 0:
+        poses = [[g[0], g[1], 0.95, gy], [g[0], g[1], gz, gy], [g[0], g[1], 1.0, gy], [pl[0], pl[1], 1.0, 0.0], [pl[0], pl[1], 0.975, 0.0], [pl[0], pl[1], zr, 0.0]]
+        pr = act("preview_motion", poses_xyzyaw=poses, max_steps=300, timeout_seconds=40)
+        pv = pr["result"]["preview"]
+        print("preview", zr, pv["ok"], pv["failed_index"], pv["reason"])
+        if pv["ok"]:
+            best = zr
+print("release z", best)
+if best > 0:
+    r = gripper_open()
+    print("open", r["status"])
+    r = move_to(target_xyz=[g[0], g[1], 0.95], target_yaw_rad=gy, max_steps=200)
+    print("above", r["result"]["motion"]["reached"])
+    r = move_to(target_xyz=[g[0], g[1], gz], target_yaw_rad=gy, max_steps=200)
+    print("down", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+    r = gripper_close()
+    s = observe()
+    gw = s["state"]["gripper_positions"][0] - s["state"]["gripper_positions"][1]
+    print("grip width", gw)
+    if gw < 0.01:
+        print("grasp missed")
+        stop()
+    r = move_to(target_xyz=[g[0], g[1], 1.0], target_yaw_rad=gy, max_steps=200)
+    print("lift", r["result"]["motion"]["reached"])
+    s = observe()
+    gw = s["state"]["gripper_positions"][0] - s["state"]["gripper_positions"][1]
+    print("grip width after lift", gw)

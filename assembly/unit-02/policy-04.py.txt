@@ -1,0 +1,21 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+r = inspect_region(bbox_xyxy=[352, 158, 392, 196], sequence=seq)
+p = r["result"]["perception"]
+pts = p["points"]
+print("handle", p["count"], p["centroid"])
+xs = [q[0] for q in pts if q[2] > 0.85]
+ys = [q[1] for q in pts if q[2] > 0.85]
+zs = [q[2] for q in pts]
+print(min(xs), max(xs), min(ys), max(ys), min(zs), max(zs))
+r2 = inspect_region(bbox_xyxy=[352, 158, 442, 242], sequence=seq)
+p2 = r2["result"]["perception"]
+pts2 = p2["points"]
+xs = [q[0] for q in pts2]
+ys = [q[1] for q in pts2]
+zs = [q[2] for q in pts2]
+print("all", p2["count"], min(xs), max(xs), min(ys), max(ys), min(zs), max(zs), p2["centroid"])
+top = [q for q in pts2 if q[2] > max(zs) - 0.004]
+print("top n", len(top))
+for q in top:
+    print([round(q[0],3), round(q[1],3)])

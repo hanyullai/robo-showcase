@@ -1,0 +1,28 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+r = inspect_region(bbox_xyxy=[340,170,435,262], sequence=seq)
+p = r["result"]["perception"]
+pts = p["points"]
+print(p["ok"], p["count"])
+zt = -10.0
+for q in pts:
+    zt = max(zt, q[2])
+xmin = 10.0
+xmax = -10.0
+for q in pts:
+    if q[2] > zt - 0.003:
+        xmin = min(xmin, q[0])
+        xmax = max(xmax, q[0])
+print("zt", zt, "xmin", xmin, "xmax", xmax)
+b = xmin
+while b < xmax + 0.005:
+    lo = 10.0
+    hi = -10.0
+    n = 0
+    for q in pts:
+        if q[2] > zt - 0.003 and q[0] >= b and q[0] < b + 0.01:
+            lo = min(lo, q[1])
+            hi = max(hi, q[1])
+            n = n + 1
+    print(round(b,3), n, round(lo,3), round(hi,3))
+    b = b + 0.01

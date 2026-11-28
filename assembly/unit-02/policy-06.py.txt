@@ -1,0 +1,7 @@
+hx = -0.168
+hy = 0.166
+g = 1.78
+for pz in [1.571, 1.56]:
+    r = preview_motion(poses_xyzyaw=[[hx, hy, 0.95, g], [hx, hy, 0.829, g], [hx, hy, 1.04, g], [0.176, 0.100, 1.04, pz], [0.176, 0.100, 0.97, pz], [0.176, 0.100, 0.86, pz]])
+    pv = r["result"]["preview"]
+    print(pz, pv["ok"], pv["completed_waypoints"], pv["failed_index"], pv["reason"])

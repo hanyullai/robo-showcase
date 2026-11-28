@@ -1,0 +1,29 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+r = inspect_region(bbox_xyxy=[305, 130, 400, 225], sequence=seq)
+p = r["result"]["perception"]
+xmin = 9
+xmax = -9
+ymin = 9
+ymax = -9
+ylox = 0
+yhix = 0
+n = 0
+for q in p["points"]:
+    if q[2] > 0.899:
+        n = n + 1
+        if q[0] < xmin:
+            xmin = q[0]
+        if q[0] > xmax:
+            xmax = q[0]
+        if q[1] < ymin:
+            ymin = q[1]
+            ylox = q[0]
+        if q[1] > ymax:
+            ymax = q[1]
+            yhix = q[0]
+print(p["ok"], p["count"], n, p["centroid"])
+print("x", xmin, xmax, "y", ymin, ylox, ymax, yhix)
+for q in p["points"]:
+    if q[2] < 0.899:
+        print(round(q[0], 4), round(q[1], 4), round(q[2], 4))

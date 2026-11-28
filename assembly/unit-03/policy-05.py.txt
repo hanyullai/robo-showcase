@@ -1,0 +1,9 @@
+gy = 1.471
+py = 1.5708
+for cand in [[gy, py], [gy - 3.14159, py - 3.14159]]:
+    a = cand[0]
+    b = cand[1]
+    poses = [[-0.053, 0.111, 1.00, a], [-0.053, 0.111, 0.888, a], [-0.053, 0.111, 1.05, a], [0.294, 0.10, 1.05, b], [0.294, 0.10, 0.978, b], [0.294, 0.10, 0.925, b]]
+    r = act("preview_motion", poses_xyzyaw=poses)
+    pv = r["result"]["preview"]
+    print(cand, pv["ok"], pv["completed_waypoints"], pv["failed_index"], pv["reason"])

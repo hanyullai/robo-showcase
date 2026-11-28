@@ -1,0 +1,16 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+r = inspect_region(bbox_xyxy=[230, 250, 270, 290], sequence=seq)
+p = r["result"]["perception"]
+print("table", p["ok"], p["count"], p["centroid"])
+r2 = inspect_region(bbox_xyxy=[365, 362, 405, 395], sequence=seq)
+p2 = r2["result"]["perception"]
+print("peg", p2["ok"], p2["count"], p2["centroid"])
+zmax = 0
+for q in p2["points"]:
+    if q[2] > zmax:
+        zmax = q[2]
+print("peg zmax", zmax)
+r3 = inspect_region(bbox_xyxy=[335, 195, 375, 222], sequence=seq)
+p3 = r3["result"]["perception"]
+print("handle", p3["ok"], p3["count"], p3["centroid"])

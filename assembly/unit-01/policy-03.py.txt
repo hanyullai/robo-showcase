@@ -1,0 +1,9 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+r = inspect_region(bbox_xyxy=[352,135,442,222], sequence=seq)
+p = r["result"]["perception"]
+print(p["ok"], p["count"])
+out = []
+for q in p["points"]:
+    out = out + [[round(q[0],3),round(q[1],3),round(q[2],3)]]
+print(out)

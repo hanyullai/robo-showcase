@@ -1,0 +1,11 @@
+tx = 0.2300
+ty = 0.0462
+r = move_to(target_xyz=[tx, ty, 0.975], target_yaw_rad=0.0, max_steps=200, tolerance_xyz=[0.003, 0.003, 0.006])
+print("align", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+r = move_to(target_xyz=[tx, ty, 0.94], target_yaw_rad=0.0, max_steps=200, tolerance_xyz=[0.003, 0.003, 0.006])
+print("enter", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+r = move_to(target_xyz=[tx, ty, 0.87], target_yaw_rad=0.0, max_steps=300)
+m = r["result"]["motion"]
+print("down", m["reached"], m["position_xyz"], m["error_max_m"])
+s = observe()
+print("ee", s["state"]["end_effector_position"], "grip", s["state"]["gripper_positions"])

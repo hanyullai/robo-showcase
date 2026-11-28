@@ -1,0 +1,30 @@
+boxes = [[230, 250, 270, 290], [368, 365, 402, 390]]
+for b in boxes:
+    s = observe()
+    seq = s["state"]["perception"]["sequence"]
+    r = inspect_region(bbox_xyxy=b, sequence=seq)
+    p = r["result"]["perception"]
+    if p["ok"]:
+        zmax = 0
+        zmin = 9
+        xmin = 9
+        xmax = -9
+        ymin = 9
+        ymax = -9
+        for q in p["points"]:
+            zmax = max(zmax, q[2])
+            zmin = min(zmin, q[2])
+            xmin = min(xmin, q[0])
+            xmax = max(xmax, q[0])
+            ymin = min(ymin, q[1])
+            ymax = max(ymax, q[1])
+        print(b, p["count"], p["centroid"], "x", xmin, xmax, "y", ymin, ymax, "z", zmin, zmax)
+    else:
+        print(b, "not ok", p["count"])
+gp = [-0.054, 0.111]
+cands = [[1.43, 0.0, 0.23, 0.04], [1.43, 3.1415, 0.23, 0.16], [-1.71, 0.0, 0.23, 0.04], [-1.71, -3.1415, 0.23, 0.16]]
+for c in cands:
+    poses = [[gp[0], gp[1], 1.0, c[0]], [gp[0], gp[1], 0.89, c[0]], [gp[0], gp[1], 1.0, c[0]], [c[2], c[3], 1.0, c[1]], [c[2], c[3], 0.975, c[1]], [c[2], c[3], 0.93, c[1]]]
+    r = act("preview_motion", poses_xyzyaw=poses, max_steps=300, timeout_seconds=40)
+    pv = r["result"]["preview"]
+    print(c, pv["ok"], pv["completed_waypoints"], pv["failed_index"], pv["reason"])

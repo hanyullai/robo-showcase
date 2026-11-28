@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-28",
+  "seeds": [
+    2811,
+    2812,
+    2813
+  ],
+  "trials": 3,
+  "replacements": 0,
+  "model": "claude-opus-5-5",
+  "temperature": 1,
+  "thinking": "off",
+  "h1": "h1-v8-v9",
+  "h1_bundle_sha256": "5ff54ea07319e6e6a069a1274abd4c2f9c7a35ceb795c49f69ddcaaf8675bee8",
+  "controller": "legacy",
+  "mode": "continuous",
+  "runtime_source_commit": "ea99e4af272f3b3e400b6717c5400585ddd5ea80",
+  "description": "Natural-language real CLI trials; no winning policy or object truth supplied to actor. Bounded read-only preview excludes movable-object contacts and payload. Independent assemble_nut plus actor stop ACK and lease release. No object-state initialization fix in these recordings.",
+  "comparability": "Known diagnostic seeds, small engineering sample, added virtual compute and preview instruction; historical comparisons are not randomized equal-compute trials."
+}

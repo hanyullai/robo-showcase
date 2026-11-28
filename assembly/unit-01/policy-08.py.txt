@@ -1,0 +1,25 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+r = inspect_region(bbox_xyxy=[345,130,450,230], sequence=seq)
+p = r["result"]["perception"]
+print(p["ok"], p["count"])
+xmin = 10.0
+xmax = -10.0
+ymin = 10.0
+ymax = -10.0
+for q in p["points"]:
+    if q[2] > 0.898:
+        xmin = min(xmin, q[0])
+        xmax = max(xmax, q[0])
+        ymin = min(ymin, q[1])
+        ymax = max(ymax, q[1])
+hs = 0.0
+hn = 0
+for q in p["points"]:
+    if q[2] > 0.895 and q[0] > xmax - 0.03:
+        hs = hs + q[1]
+        hn = hn + 1
+hy = hs / max(hn, 1)
+cx = xmin + 0.04375
+ring_y = (ymin + ymax) / 2
+print("top x", xmin, xmax, "y", ymin, ymax, "ringc", cx, ring_y, "handle y", hy, hn)

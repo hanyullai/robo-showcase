@@ -1,0 +1,11 @@
+hx = -0.170
+hy = 0.164
+tx = 0.176
+ty = 0.100
+opts = [[-1.361, -1.571], [1.780, 1.571]]
+for o in opts:
+    g = o[0]
+    pz = o[1]
+    r = preview_motion(poses_xyzyaw=[[hx, hy, 1.00, g], [hx, hy, 0.893, g], [hx, hy, 1.04, g], [tx, ty, 1.04, pz], [tx, ty, 0.93, pz]])
+    pv = r["result"]["preview"]
+    print(o, pv["ok"], pv["completed_waypoints"], pv["failed_index"], pv["reason"])

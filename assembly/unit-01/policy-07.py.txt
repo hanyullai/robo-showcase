@@ -1,0 +1,10 @@
+gx = -0.050
+gy = 0.164
+gz = 0.890
+opts = [[1.5708, 0.176, 0.10, -1.5708], [-1.5708, 0.176, 0.10, 1.5708], [1.5708, 0.23, 0.046, 0.0], [-1.5708, 0.23, 0.154, 0.0], [1.5708, 0.23, 0.154, 3.14]]
+for o in opts:
+    y0 = o[0]
+    y1 = o[3]
+    r = act("preview_motion", poses_xyzyaw=[[gx,gy,1.0,y0],[gx,gy,gz,y0],[gx,gy,1.02,y0],[o[1],o[2],1.02,y1],[o[1],o[2],0.985,y1],[o[1],o[2],0.91,y1]], max_steps=300, timeout_seconds=60)
+    pv = r["result"]["preview"]
+    print(o, pv["ok"], pv["completed_waypoints"], pv["failed_index"], pv["reason"])

@@ -1,0 +1,14 @@
+tx = 0.165
+ty = 0.106
+m = act("move_to", target_xyz=[tx,ty,0.86], target_yaw_rad=-1.5708, max_steps=100, settle_steps=10, tolerance_xyz=[0.004,0.004,0.008])
+print("down", m["result"]["motion"]["reached"], m["result"]["motion"]["position_xyz"])
+gripper_open()
+o = observe()
+print("open", o["state"]["gripper_positions"], o["state"]["end_effector_position"])
+m = move_to(target_xyz=[tx,ty,1.02], target_yaw_rad=-1.5708, max_steps=200)
+print("retreat", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"])
+o = observe()
+print("after", o["state"]["end_effector_position"])
+v = verify("assemble_nut")
+print("verify", v["status"])
+print(v)

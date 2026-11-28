@@ -90,3 +90,17 @@ after motion failures, and recovered after a post-release parameter error. The
 controller and verification thresholds were not changed. H1 was available but
 not called. Two earlier trials were blocked by upstream content_filter before
 physical action; this selected success is not a benchmark success rate.
+
+## Assembly workcell collection (2026-11-28)
+
+`assembly/` preserves three fixed real CLI trials, every generated policy and all
+recorded simulation frames. All three passed independent task checks and actor
+cleanup; 48/48 real target moves reached. The hero now uses industrial display
+rendering from recorded state, with the original actor camera available in the
+collection. No actor RGB-D or physics was recolored.
+
+Recordings match runtime commit `ea99e4af272f3b3e400b6717c5400585ddd5ea80`. Latest source commit
+`6802868bf4bb532f361276864026e5492bf01d02` adds settled initialization, verified in five no-model paired
+scenes; no autonomous trials were rerun after that fix. The site labels these
+versions separately and makes no long-term 100% success claim. Public assets and
+original policy hashes are in `assembly/assets-sha256.json`.

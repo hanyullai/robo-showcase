@@ -1,0 +1,9 @@
+gx = -0.052
+gy = 0.161
+tx = 0.166
+ty = 0.106
+for y0 in [1.5708, -1.5708]:
+    y1 = -y0
+    pv = act("preview_motion", poses_xyzyaw=[[gx,gy,0.95,y0],[gx,gy,0.832,y0],[gx,gy,1.02,y0],[tx,ty,1.02,y1],[tx,ty,0.985,y1],[tx,ty,0.87,y1]], max_steps=300, timeout_seconds=60)
+    pr = pv["result"]["preview"]
+    print(y0, pr["ok"], pr["failed_index"], pr["reason"])

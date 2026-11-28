@@ -1,0 +1,12 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+r2 = inspect_region(bbox_xyxy=[345, 155, 445, 245], sequence=seq)
+p2 = r2["result"]["perception"]
+pts2 = p2["points"]
+zmax = 0
+for q in pts2:
+    zmax = max(zmax, q[2])
+print("count", p2["count"], "zmax", zmax, p2["centroid"])
+for q in pts2:
+    if q[2] > zmax - 0.004:
+        print([round(q[0],3), round(q[1],3)])

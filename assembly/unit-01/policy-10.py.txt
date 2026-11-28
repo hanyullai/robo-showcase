@@ -1,0 +1,9 @@
+gripper_open()
+o = observe()
+e = o["state"]["end_effector_position"]
+m = move_to(target_xyz=[e[0], e[1], 1.0], target_yaw_rad=1.5708, max_steps=200)
+print("up", m["result"]["motion"]["reached"])
+m = move_to(target_xyz=[-0.10, -0.10, 1.05], target_yaw_rad=1.5708, max_steps=300)
+print("clear", m["result"]["motion"]["reached"])
+o = observe()
+print(o["state"]["gripper_positions"], o["state"]["end_effector_position"])

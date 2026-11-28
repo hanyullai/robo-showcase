@@ -1,0 +1,10 @@
+tx = 0.165
+ty = 0.106
+z = 0.97
+res = "ok"
+while z > 0.885:
+    m = act("move_to", target_xyz=[tx,ty,z], target_yaw_rad=-1.5708, max_steps=80, settle_steps=10, tolerance_xyz=[0.004,0.004,0.006])
+    o = observe()
+    e = o["state"]["end_effector_position"]
+    print(round(z,3), m["result"]["motion"]["reached"], [round(e[0],4), round(e[1],4), round(e[2],4)], o["state"]["gripper_positions"])
+    z = z - 0.015

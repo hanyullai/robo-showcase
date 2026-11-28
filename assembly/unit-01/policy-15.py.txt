@@ -1,0 +1,21 @@
+gx = -0.052
+gy = 0.161
+gz = 0.832
+ok = True
+gripper_open()
+m = move_to(target_xyz=[gx,gy,0.95], target_yaw_rad=1.5708, max_steps=300)
+print("approach", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"])
+m = move_to(target_xyz=[gx,gy,gz], target_yaw_rad=1.5708, max_steps=200, tolerance_xyz=[0.004,0.004,0.006])
+print("descend", m["result"]["motion"]["reached"], m["result"]["motion"]["error_xyz"])
+gripper_close()
+o = observe()
+g = o["state"]["gripper_positions"]
+print("grip", g, o["state"]["end_effector_position"])
+if g[0] - g[1] < 0.01:
+    print("MISS")
+    ok = False
+if ok:
+    m = move_to(target_xyz=[gx,gy,1.02], target_yaw_rad=1.5708, max_steps=200)
+    print("lift", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"])
+    o = observe()
+    print("grip after lift", o["state"]["gripper_positions"], o["state"]["end_effector_position"])

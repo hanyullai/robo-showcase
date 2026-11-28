@@ -1,0 +1,72 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+r = inspect_region(bbox_xyxy=[345,130,450,230], sequence=seq)
+p = r["result"]["perception"]
+pts = p["points"]
+zt = -10.0
+for q in pts:
+    zt = max(zt, q[2])
+xmin = 10.0
+for q in pts:
+    if q[2] > zt - 0.003:
+        xmin = min(xmin, q[0])
+hx = 0.0
+hy = 0.0
+hn = 0
+ry0 = 10.0
+ry1 = -10.0
+for q in pts:
+    if q[2] > zt - 0.003:
+        if q[0] > xmin + 0.092:
+            hx = hx + q[0]
+            hy = hy + q[1]
+            hn = hn + 1
+        if q[0] < xmin + 0.08:
+            ry0 = min(ry0, q[1])
+            ry1 = max(ry1, q[1])
+hx = hx / max(hn, 1)
+hy = hy / max(hn, 1)
+cx = xmin + 0.04375
+cy = (ry0 + ry1) / 2
+print("zt", zt, "xmin", xmin, "handle", hx, hy, hn, "hole", cx, cy)
+if hn < 5 or abs(hy - cy) > 0.02:
+    print("bad geometry")
+    stop()
+gx = hx - 0.003
+gy = hy
+gz = zt - 0.011
+ox = cx - gx
+oy = cy - gy
+tx = 0.23 + ox
+ty = 0.10 + oy
+print("grasp", gx, gy, gz, "offset", ox, oy, "tcp target", tx, ty)
+pv = act("preview_motion", poses_xyzyaw=[[gx,gy,1.0,1.5708],[gx,gy,gz,1.5708],[gx,gy,1.02,1.5708],[tx,ty,1.02,-1.5708],[tx,ty,0.985,-1.5708],[tx,ty,0.905,-1.5708]], max_steps=300, timeout_seconds=60)
+print("preview", pv["result"]["preview"]["ok"], pv["result"]["preview"]["reason"])
+if not pv["result"]["preview"]["ok"]:
+    stop()
+gripper_open()
+m = move_to(target_xyz=[gx,gy,1.0], target_yaw_rad=1.5708, max_steps=300)
+print("approach", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"])
+m = move_to(target_xyz=[gx,gy,gz], target_yaw_rad=1.5708, max_steps=200)
+print("descend", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"])
+gripper_close()
+o = observe()
+g = o["state"]["gripper_positions"]
+print("grip", g, o["state"]["end_effector_position"])
+if g[0] - g[1] < 0.01:
+    print("gripper fully closed - missed")
+    stop()
+m = move_to(target_xyz=[gx,gy,1.02], target_yaw_rad=1.5708, max_steps=200)
+print("lift", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"])
+o = observe()
+g = o["state"]["gripper_positions"]
+print("grip after lift", g)
+if g[0] - g[1] < 0.01:
+    print("lost nut")
+    stop()
+m = move_to(target_xyz=[tx,ty,1.02], target_yaw_rad=-1.5708, max_steps=300)
+print("transfer", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"], m["result"]["motion"]["orientation_error_rad"])
+m = move_to(target_xyz=[tx,ty,0.985], target_yaw_rad=-1.5708, max_steps=200, tolerance_xyz=[0.003,0.003,0.006])
+print("hover", m["result"]["motion"]["reached"], m["result"]["motion"]["error_xyz"])
+o = observe()
+print("hover grip", o["state"]["gripper_positions"], o["state"]["end_effector_position"])

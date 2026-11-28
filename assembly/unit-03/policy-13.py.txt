@@ -1,0 +1,23 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+ee = s["state"]["end_effector_position"]
+r = inspect_region(bbox_xyxy=[365, 280, 472, 400], sequence=seq)
+p = r["result"]["perception"]
+print(p["ok"], p["count"], p["centroid"], "ee", ee)
+zt = 0
+for q in p["points"]:
+    zt = max(zt, q[2])
+xmin = 9
+xmax = -9
+ymin = 9
+ymax = -9
+n = 0
+for q in p["points"]:
+    if q[2] > zt - 0.004:
+        n = n + 1
+        xmin = min(xmin, q[0])
+        xmax = max(xmax, q[0])
+        ymin = min(ymin, q[1])
+        ymax = max(ymax, q[1])
+print("ztop", zt, "n", n, "x", xmin, xmax, "y", ymin, ymax)
+print("ring center est", (xmin + xmax) / 2, (ymin + ymax) / 2)

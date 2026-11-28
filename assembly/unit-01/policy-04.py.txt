@@ -1,0 +1,4 @@
+for yaw in [1.5708, -1.5708]:
+    r = act("preview_motion", poses_xyzyaw=[[-0.058,0.164,1.0,yaw],[-0.058,0.164,0.893,yaw],[-0.058,0.164,1.02,yaw],[0.284,0.10,1.02,yaw],[0.284,0.10,0.94,yaw]])
+    pv = r["result"]["preview"]
+    print(yaw, pv["ok"], pv["completed_waypoints"], pv["failed_index"], pv["reason"])

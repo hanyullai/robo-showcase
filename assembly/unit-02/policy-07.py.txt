@@ -1,0 +1,15 @@
+hx = -0.168
+hy = 0.166
+g = 1.78
+r = gripper_open()
+print("open", r["status"], r["result"]["state"]["gripper_positions"])
+for p in [[hx, hy, 0.95], [hx, hy, 0.829]]:
+    m = move_to(target_xyz=p, target_yaw_rad=g)["result"]["motion"]
+    print(p, m["reached"], m["error_max_m"])
+r = gripper_close()
+gp = r["result"]["state"]["gripper_positions"]
+print("close", r["status"], gp)
+m = move_to(target_xyz=[hx, hy, 1.0], target_yaw_rad=g)["result"]["motion"]
+print("lift", m["reached"], m["error_max_m"])
+s = observe()
+print("after lift grip", s["state"]["gripper_positions"], s["state"]["end_effector_position"])

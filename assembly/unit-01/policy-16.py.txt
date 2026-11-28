@@ -1,0 +1,8 @@
+tx = 0.165
+ty = 0.106
+m = move_to(target_xyz=[tx,ty,1.02], target_yaw_rad=-1.5708, max_steps=300)
+print("transfer", m["result"]["motion"]["reached"], m["result"]["motion"]["error_max_m"], m["result"]["motion"]["orientation_error_rad"])
+m = move_to(target_xyz=[tx,ty,0.985], target_yaw_rad=-1.5708, max_steps=200, tolerance_xyz=[0.003,0.003,0.006])
+print("hover", m["result"]["motion"]["reached"], m["result"]["motion"]["error_xyz"])
+o = observe()
+print("state", o["state"]["gripper_positions"], o["state"]["end_effector_position"])

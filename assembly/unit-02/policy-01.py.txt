@@ -1,0 +1,11 @@
+s = observe()
+seq = s["state"]["perception"]["sequence"]
+print("seq", seq)
+r = inspect_region(bbox_xyxy=[350, 120, 456, 206], sequence=seq)
+p = r["result"]["perception"]
+print(p["ok"], p["count"])
+pts = p["points"]
+for q in pts:
+    print([round(q[0],4), round(q[1],4), round(q[2],4)])
+g = resting_geometry(pts, support_z=0.82)
+print(g)

@@ -1,0 +1,7 @@
+r = move_to(target_xyz=[0.1, 0.06, 1.02], target_yaw_rad=0.7, max_steps=250)
+print("mid", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+r = move_to(target_xyz=[0.23, 0.0403, 1.0], target_yaw_rad=0.0, max_steps=250)
+print("above peg", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"], r["result"]["motion"]["orientation_error_rad"])
+s = observe()
+gw = s["state"]["gripper_positions"][0] - s["state"]["gripper_positions"][1]
+print("grip width", gw, s["state"]["end_effector_position"])

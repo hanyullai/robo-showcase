@@ -1,0 +1,23 @@
+g = [-0.052, 0.112]
+gy = 1.42
+gz = 0.879
+pl = [0.228, 0.038]
+poses = [[g[0], g[1], 0.98, gy], [g[0], g[1], gz, gy], [g[0], g[1], 1.0, gy], [pl[0], pl[1], 1.0, 0.0], [pl[0], pl[1], 0.972, 0.0], [pl[0], pl[1], 0.905, 0.0]]
+pr = act("preview_motion", poses_xyzyaw=poses, max_steps=300, timeout_seconds=40)
+pv = pr["result"]["preview"]
+print("preview", pv["ok"], pv["completed_waypoints"], pv["failed_index"], pv["reason"])
+if pv["ok"]:
+    r = gripper_open()
+    print("open", r["status"])
+    r = move_to(target_xyz=[g[0], g[1], 0.98], target_yaw_rad=gy, max_steps=200)
+    print("above", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+    r = move_to(target_xyz=[g[0], g[1], gz], target_yaw_rad=gy, max_steps=200)
+    print("down", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+    r = gripper_close()
+    print("close", r["status"])
+    s = observe()
+    print("grip", s["state"]["gripper_positions"], s["state"]["end_effector_position"])
+    r = move_to(target_xyz=[g[0], g[1], 1.0], target_yaw_rad=gy, max_steps=200)
+    print("lift", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+    s = observe()
+    print("grip after lift", s["state"]["gripper_positions"], s["state"]["end_effector_position"])

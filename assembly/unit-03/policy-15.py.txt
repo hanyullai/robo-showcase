@@ -1,0 +1,12 @@
+r = gripper_open()
+print("open", r["status"])
+s = observe()
+ee = s["state"]["end_effector_position"]
+r = move_to(target_xyz=[ee[0], ee[1] - 0.01, 0.90], target_yaw_rad=0.0, max_steps=200)
+print("up1", r["result"]["motion"]["reached"])
+r = move_to(target_xyz=[ee[0], ee[1] - 0.03, 1.02], target_yaw_rad=0.0, max_steps=250)
+print("retreat", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+r = move_to(target_xyz=[ee[0], ee[1] - 0.03, 1.02], target_yaw_rad=0.0, max_steps=60)
+print("settle", r["result"]["motion"]["reached"])
+v = verify("assemble_nut")
+print("verify", v["status"], v)
