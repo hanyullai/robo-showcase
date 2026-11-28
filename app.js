@@ -1,10 +1,10 @@
-import { runs } from './assets/runs.js?v=7';
+import { runs } from './assets/runs.js?v=8';
 
 const $ = (selector) => document.querySelector(selector);
 const sourceCache = new Map();
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let language = 'en';
-try { language = localStorage.getItem('robo-language') === 'zh' ? 'zh' : 'en'; } catch { /* Storage is optional. */ }
+// Open in English even when a previous visit selected Chinese.
 let selected = runs.find((run) => run.id === 'nut');
 let source = '';
 let sourceVersion = 0;
