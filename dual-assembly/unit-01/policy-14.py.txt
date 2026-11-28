@@ -1,0 +1,22 @@
+gx = -0.165
+gy = 0.222
+yaw = 1.07
+pv = act("preview_motion", poses_xyzyaw=[[gx,gy,0.98,yaw],[gx,gy,0.831,yaw],[gx,gy,1.02,yaw],[0.176,0.1,1.02,1.571],[0.176,0.1,0.86,1.571]])["result"]["preview"]
+print("preview", pv["ok"], pv["failed_index"], pv["reason"])
+if pv["ok"]:
+    r = move_to(target_xyz=[gx, gy, 0.98], target_yaw_rad=yaw, max_steps=200)
+    print("approach", r["result"]["motion"]["reached"])
+    r = move_to(target_xyz=[gx, gy, 0.831], target_yaw_rad=yaw, max_steps=150)
+    print("descend", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+    r = gripper_close()
+    s = observe()
+    print("grip", s["state"]["gripper_positions"])
+    r = move_to(target_xyz=[gx, gy, 1.02], target_yaw_rad=yaw, max_steps=150)
+    print("lift", r["result"]["motion"]["reached"])
+    s = observe()
+    print("grip after lift", s["state"]["gripper_positions"])
+    if s["state"]["gripper_positions"][0] > 0.008:
+        r = move_to(target_xyz=[0.176, 0.1, 1.02], target_yaw_rad=1.571, max_steps=250)
+        print("transfer", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+        s = observe()
+        print("grip after transfer", s["state"]["gripper_positions"])

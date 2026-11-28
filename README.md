@@ -26,13 +26,13 @@ GitHub Pages: deploy the `main` branch, repository root. `.nojekyll` ensures ass
 - `evidence/stack-resume-original.mp4`: original latest recovery recording.
 - Earlier original recordings and broader project documentation are linked to the source repository.
 
-Videos contain simulation frames and omit time spent waiting for the model. Task wall time is shown separately. The older Lift and Stack runs use historical bounded protocols; PickPlace and recovery use continuous protocols. The five newest records had H1 enabled; the three earlier records did not. The nut run made no H1 helper call. Do not treat these records as a paired comparison.
+Videos contain simulation frames and omit time spent waiting for the model. Task wall time is shown separately. The older Lift and Stack runs use historical bounded protocols; PickPlace and recovery use continuous protocols. H1 availability and actual helper use are recorded per run; older records include H1-off trials. The single-nut run made no H1 helper call; the dual-nut run made two. Do not treat these records as a paired comparison.
 
 Only curated recordings, generated policies and result summaries are published. Full model conversations, credentials, machine paths and private runtime logs are not included.
 
 ## Interaction
 
-- Eight experiment tabs with keyboard arrow / Home / End navigation.
+- Nine experiment tabs with keyboard arrow / Home / End navigation.
 - Original policy selector, download and copy.
 - English / Chinese interface.
 - User-controlled video playback and reduced-motion support.
@@ -101,6 +101,20 @@ collection. No actor RGB-D or physics was recolored.
 
 Recordings match runtime commit `ea99e4af272f3b3e400b6717c5400585ddd5ea80`. Latest source commit
 `6802868bf4bb532f361276864026e5492bf01d02` adds settled initialization, verified in five no-model paired
-scenes; no autonomous trials were rerun after that fix. The site labels these
+scenes; no autonomous trials were rerun in that publication batch. The separate dual-nut demo below now includes the initialization fix. The site labels these
 versions separately and makes no long-term 100% success claim. Public assets and
 original policy hashes are in `assembly/assets-sha256.json`.
+
+## Dual-specification assembly (2026-11-29)
+
+The homepage hero and ninth experiment feature one real CLI trial with both square
+and round nuts present (seed 2911). The agent chose round then square, passed
+all eight independent checks and actively stopped/released the lease. 31 requests,
+530.69 seconds, 16/16 target moves. All 16 original policies, failed drafts, partial
+checks and full 782-frame video are available in `dual-assembly/`. The 39.1-second
+industrial video changes presentation only and omits model waiting.
+
+Base code 6802868 plus a local dual-nut extension; exact runtime hashes are in
+`dual-assembly/candidate-files.json`. H1 was available and called twice. This is
+one successful scene, not a success-rate estimate. The previous single-nut
+collection retains its own videos, source version and evidence.

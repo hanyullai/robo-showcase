@@ -1,0 +1,17 @@
+yaw = 0.611
+gx = -0.155
+gy = -0.143
+r = gripper_open()
+print("open", r["status"])
+r = move_to(target_xyz=[gx, gy, 0.98], target_yaw_rad=yaw)
+print("approach", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+r = move_to(target_xyz=[gx, gy, 0.831], target_yaw_rad=yaw, max_steps=150)
+print("descend", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+r = gripper_close()
+print("close", r["status"])
+s = observe()
+print("grip", s["state"]["gripper_positions"])
+r = move_to(target_xyz=[gx, gy, 1.01], target_yaw_rad=yaw, max_steps=150)
+print("lift", r["result"]["motion"]["reached"], r["result"]["motion"]["error_max_m"])
+s = observe()
+print("grip after lift", s["state"]["gripper_positions"], s["state"]["end_effector_position"])

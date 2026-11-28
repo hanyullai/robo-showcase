@@ -1,0 +1,17 @@
+yaw = 1.571
+tx = 0.168
+ty = 0.100
+r = move_to(target_xyz=[tx, ty, 0.975], target_yaw_rad=yaw, max_steps=150)
+print("pre", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+r = move_to(target_xyz=[tx, ty, 0.90], target_yaw_rad=yaw, max_steps=150, tolerance_xyz=[0.006,0.006,0.01])
+print("insert1", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+r = move_to(target_xyz=[tx, ty, 0.845], target_yaw_rad=yaw, max_steps=150, tolerance_xyz=[0.006,0.006,0.012])
+print("insert2", r["result"]["motion"]["reached"], r["result"]["motion"]["position_xyz"])
+r = gripper_open()
+print("open", r["status"])
+r = move_to(target_xyz=[tx, ty, 1.0], target_yaw_rad=yaw, max_steps=150)
+print("retreat", r["result"]["motion"]["reached"])
+v = verify("assemble_nuts")
+print(v["status"], v["summary"])
+for c in v["checks"]:
+    print(c["name"], c["status"])

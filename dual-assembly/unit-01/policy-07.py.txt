@@ -1,0 +1,13 @@
+boxes = [[50,165,172,245], [355,160,452,245]]
+for b in boxes:
+    s = observe()
+    seq = s["state"]["perception"]["sequence"]
+    r = inspect_region(bbox_xyxy=b, sequence=seq)
+    p = r["result"]["perception"]
+    pts = p["points"]
+    print("seq", seq, p["ok"], p["count"])
+    out = []
+    for q in pts:
+        out = out + [[round(q[0],3), round(q[1],3), round(q[2],3)]]
+    print(out)
+    print(resting_geometry(pts, support_z=0.82))

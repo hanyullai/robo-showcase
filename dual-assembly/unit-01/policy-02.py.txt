@@ -1,0 +1,11 @@
+rs = [inspect_region(bbox_xyxy=[50,165,172,245], sequence=1), inspect_region(bbox_xyxy=[355,160,452,245], sequence=1)]
+for r in rs:
+    p = r["result"]["perception"]
+    pts = p["points"]
+    print(p["ok"], p["count"])
+    xs = [q[0] for q in pts]
+    ys = [q[1] for q in pts]
+    zs = [q[2] for q in pts]
+    print("x", round(min(xs),4), round(max(xs),4), "y", round(min(ys),4), round(max(ys),4), "z", round(min(zs),4), round(max(zs),4))
+    print([[round(q[0],3), round(q[1],3), round(q[2],3)] for q in pts])
+    print(resting_geometry(pts, support_z=0.82))

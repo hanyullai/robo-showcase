@@ -1,0 +1,5 @@
+r = move_to(target_xyz=[0.185, -0.044, 1.02], target_yaw_rad=0.611, max_steps=200)
+m = r["result"]["motion"]
+print("transfer", m["reached"], m["error_max_m"], m["position_xyz"])
+s = observe()
+print("grip", s["state"]["gripper_positions"], s["state"]["perception"]["sequence"])

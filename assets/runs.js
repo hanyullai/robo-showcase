@@ -882,5 +882,191 @@ export const runs = [
         "zh": "Seed 2802。54 次模型请求、853.1 秒；实际执行的 24 次目标移动中 20 次到位，另有 1 次因参数错误被拒绝、未移动。模型自行修正受限 Python 错误、更新过期取点、在接近失败后改变抓手朝向，并从松爪后的参数错误中恢复。完整保留 23 份原始策略、9 段录像；合并录像 89.5 秒，不含模型等待。之前两次在物理动作前被上游 content_filter 阻断。模型、控制器、H1 包和评分器均未改；H1 可用但没有实际 helper 调用。这是一场成功记录，不代表成功率。"
       }
     }
+  },
+  {
+    "id": "dual-nut",
+    "date": "2026-11-29",
+    "seed": 2911,
+    "model": "claude-opus-5-5",
+    "elapsed_seconds": 530.69,
+    "model_calls": 31,
+    "actions": 21,
+    "control_reached": 16,
+    "control_attempts": 16,
+    "protocol": "continuous-dual-nut-pilot-v1",
+    "autonomous_success": true,
+    "task_success": true,
+    "actor_independent_verification": "passed",
+    "actor_stop_ack": true,
+    "actor_release": true,
+    "h1": "h1-v8-v9",
+    "helper_calls": 2,
+    "policies": [
+      {
+        "path": "dual-assembly/unit-01/policy-01.py.txt",
+        "sha256": "ea6eaf755ec6563ae75956d1c64c2b39d4481915b185e696c0aa23c0c50e43ba",
+        "label": "Policy 01 · rejected"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-02.py.txt",
+        "sha256": "b86e3c078b790616d129b5cc31e897a4b1d5e8a264c010aa9b03b3a59b5be12d",
+        "label": "Policy 02 · rejected"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-03.py.txt",
+        "sha256": "9f8ed5cab1496bd94a903a2a3f28fd9fe2e7c279bc259550dcbecf46edc23fea",
+        "label": "Policy 03 · rejected"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-04.py.txt",
+        "sha256": "a4043a0ad8fcce252b285da4be0b02eba17fddd6eb0eea3e7f0f4f1b6d26f1e5",
+        "label": "Policy 04 · adapter_error"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-05.py.txt",
+        "sha256": "6c310514548dd6035dd180e953660872e1a40d2611850c32f22c70397340693d",
+        "label": "Policy 05 · lease_required"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-06.py.txt",
+        "sha256": "6c310514548dd6035dd180e953660872e1a40d2611850c32f22c70397340693d",
+        "label": "Policy 06 · adapter_error"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-07.py.txt",
+        "sha256": "a7f427752b142f418a5dde53f6a6b3dd66bf479db1ce08fefbcccc1caa67957f",
+        "label": "Policy 07 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-08.py.txt",
+        "sha256": "05b90b5edd935d85845a28b1fbeb454172164d73f01a692b8483e634be48d777",
+        "label": "Policy 08 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-09.py.txt",
+        "sha256": "9c97c0c58e268ec9c387e9543541760d1e6977a205f3088798dd07430584551c",
+        "label": "Policy 09 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-10.py.txt",
+        "sha256": "f9ddfd95ee5ec961be6be52e913515adc0aa599f5013af272c156d6f59575e10",
+        "label": "Policy 10 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-11.py.txt",
+        "sha256": "3682a886439c986c63cbe3e4ff359342193cbe527948ab558af322c0df3b14ef",
+        "label": "Policy 11 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-12.py.txt",
+        "sha256": "d10b71b5fc9e2ecee3cf41f99b877db24153d479588b37e916fc5e67c940e1d1",
+        "label": "Policy 12 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-13.py.txt",
+        "sha256": "64f3c413dea7596ecda3875223c8e10709a678ac7b97ffc2227c34c4c5cd677e",
+        "label": "Policy 13 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-14.py.txt",
+        "sha256": "bbd937f4db7637b3d7a78eebea3717289f2dcda8dfe425511825f5f173bb37a0",
+        "label": "Policy 14 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-15.py.txt",
+        "sha256": "2caaa4669a85d12e5a25140b19424d4f12658807fc2403f07b04f50986fa7c2b",
+        "label": "Policy 15 · completed"
+      },
+      {
+        "path": "dual-assembly/unit-01/policy-16.py.txt",
+        "sha256": "04c07bda3f1dd414e6504e91572ee84523d1e97a8805c2c44ccb57e16e2c7293",
+        "label": "Policy 16 · completed"
+      }
+    ],
+    "default_policy": 13,
+    "video": "dual-assembly/unit-01/industrial.mp4",
+    "poster": "dual-assembly/unit-01/industrial.png",
+    "video_seconds": 39.1,
+    "original_video": "dual-assembly/unit-01/original.mp4",
+    "original_video_sha256": "d7b8ff625bb24aa5940e41486de9589b9b8bebb6776fae749d8040fdc53a0121",
+    "web_video_sha256": "6eab1f0d0551bf6bed08fbc15ef4a3c5f6bafdb2ce81f7dce24a891e433e897e",
+    "verification_checks": [
+      {
+        "name": "square_official_nut_assembly",
+        "status": "passed",
+        "observed": true,
+        "expected": "Native per-object check on the assigned peg"
+      },
+      {
+        "name": "square_peg_inside_seated_hole",
+        "status": "passed",
+        "observed": true,
+        "expected": "Assigned peg fully inside both bore faces, upright within 5 degrees, nut center 0.825<z<0.845 m"
+      },
+      {
+        "name": "square_released_and_retreated",
+        "status": "passed",
+        "observed": true,
+        "expected": "Not grasped; TCP more than 0.06 m from nut"
+      },
+      {
+        "name": "square_stable_insertion",
+        "status": "passed",
+        "observed": true,
+        "expected": "20 cycles, <=2 mm / 2 degree peak-to-peak pose drift; verification advances no cycles"
+      },
+      {
+        "name": "round_official_nut_assembly",
+        "status": "passed",
+        "observed": true,
+        "expected": "Native per-object check on the assigned peg"
+      },
+      {
+        "name": "round_peg_inside_seated_hole",
+        "status": "passed",
+        "observed": true,
+        "expected": "Assigned peg fully inside both bore faces, upright within 5 degrees, nut center 0.825<z<0.845 m"
+      },
+      {
+        "name": "round_released_and_retreated",
+        "status": "passed",
+        "observed": true,
+        "expected": "Not grasped; TCP more than 0.06 m from nut"
+      },
+      {
+        "name": "round_stable_insertion",
+        "status": "passed",
+        "observed": true,
+        "expected": "20 cycles, <=2 mm / 2 degree peak-to-peak pose drift; verification advances no cycles"
+      }
+    ],
+    "tool_errors": [
+      "<tool_error>robo_run_policy failed: Robo code policy failed\n\nerror_code=unsafe_policy, message=Policy loop target must be one name, line=3,column=1",
+      "<tool_error>robo_run_policy failed: Robo code policy failed\n\nerror_code=unsafe_policy, message=Policy syntax ListComp is not allowed, line=6,column=10",
+      "<tool_error>robo_run_policy failed: Robo code policy failed\n\nerror_code=unsafe_policy, message=Policy calls must use an allowed function name, line=8,column=9",
+      "<tool_error>robo_run_policy failed: Robo code policy failed\n\nerror_code=adapter_error, message=Hardware adapter execute failed, line=1,column=1",
+      "<tool_error>robo_run_policy failed: Robo code policy failed\n\nerror_code=lease_required, message=Command requires the active lease for mujoco-panda-1, line=4,column=1",
+      "<tool_error>robo_devices failed: Cannot arm mujoco-panda-1: lease_required\n\nerror_code=lease_required</tool_error>",
+      "<tool_error>robo_run_policy failed: Robo code policy failed\n\nerror_code=adapter_error, message=Hardware adapter execute failed, line=4,column=1"
+    ],
+    "source_commit": "6802868bf4bb532f361276864026e5492bf01d02",
+    "source_includes_local_modifications": true,
+    "source_hashes_file": "dual-assembly/candidate-files.json",
+    "full_evidence": "dual-assembly/",
+    "presentation": {
+      "title": "DUAL ASSEMBLY / IDENTIFY & MATCH",
+      "prompt": {
+        "en": "“Identify both nuts, fit each onto its matching peg, then independently verify both and stop safely.”",
+        "zh": "“识别两种螺母，分别装到对应柱上，独立验证两件并安全停止。”"
+      },
+      "outcome": {
+        "en": "Round first, then square. Both parts passed all eight checks; actor stop ACK and lease release confirmed.",
+        "zh": "先圆后方，两件共八项独立检查通过；模型主动停止 ACK、释放租约完成。"
+      },
+      "notes": {
+        "en": "Seed 2911. One trial, 31 requests, 530.69 s. All 16 original policies retained, including rejected drafts and stale-observation failures corrected by the agent. 16/16 moves reached. Industrial display re-renders all 782 recorded frames; 39.1 s excludes model waiting. Two H1 calls. The base source is 6802868 plus a local dual-nut extension, not the base commit alone. One successful scene, not a reliability estimate. Full per-part checks and failed attempts: dual-assembly/.",
+        "zh": "Seed 2911，单场 31 次请求、530.69 秒。保留全部 16 份原始策略，包括模型自行纠正的语法和旧观测错误。16/16 移动到位，工业展示重渲染全部 782 帧；39.1 秒录像省略模型等待。H1 调用两次。源码为 6802868 加本地双件扩展，非基础提交本身。单场成功不代表可靠成功率，逐件验证与失败记录见双件详情页。"
+      }
+    }
   }
 ];

@@ -1,11 +1,11 @@
-import { runs } from './assets/runs.js?v=8';
+import { runs } from './assets/runs.js?v=9';
 
 const $ = (selector) => document.querySelector(selector);
 const sourceCache = new Map();
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let language = 'en';
 // Open in English even when a previous visit selected Chinese.
-let selected = runs.find((run) => run.id === 'nut');
+let selected = runs.find((run) => run.id === 'dual-nut');
 let source = '';
 let sourceVersion = 0;
 let toastTimer;
@@ -13,17 +13,18 @@ let heroUserPaused = false;
 let heroVisible = false;
 const originalText = new Map([...document.querySelectorAll('[data-i18n]')].map((node) => [node, node.innerHTML]));
 const zh = {
-  assemblyEyebrow:'新增 / 自主装配工位',assemblyTitle:'先预演路线，<br>再执行装配。',assemblySummary:'三个固定场景，三次独立验证通过。<br>完整工业画面、失败记录与原始策略代码。',assemblyBoundary:'工业画面由记录状态重绘，模型所见 RGB-D 未改变。这是已知场景的小样本检查，不代表长期成功率。录像早于最新初始化修复；该修复已通过五个无模型配对检查，尚未重跑完整自主任务。',assemblyWatch:'查看三场完整装配记录 ↗',
+  assemblyEyebrow:'新增 / 自主装配工位',assemblyTitle:'先预演路线，<br>再执行装配。',assemblySummary:'三个固定场景，三次独立验证通过。<br>完整工业画面、失败记录与原始策略代码。',assemblyBoundary:'工业画面由记录状态重绘，模型所见 RGB-D 未改变。这是已知场景的小样本检查，不代表长期成功率。录像早于最新初始化修复；上方独立的双件 demo 使用了稳定初始化。',assemblyWatch:'查看三场完整装配记录 ↗',
 
   navWork:'实验现场',navSystem:'如何运作',navEvidence:'结果证据',eyebrow:'具身智能实验室',
   hero1:'语言输入。',hero2:'行动输出。',heroDescription:'让 agent 自己写策略、操作机械臂，<br>再用独立验证证明结果。',watch:'进入实验现场',how:'看看它如何运作',heroNote:'真实 AGENT 实跑 · MUJOCO 仿真<br>不是预先编排的成功动画',
-  fieldRecording:'装配工位 / 2026.11.28',simulation:'记录状态重绘',heroFilmTitle:'观察、预演、自主装配。',heroFilmSub:'三个固定初态，分别独立验证。',independentlyVerified:'独立验证通过',stripLabel:'从自然语言到实际动作',
+  fieldRecording:'混料装配 / 2026.11.29',simulation:'记录状态重绘',heroFilmTitle:'识别、匹配、自主装配。',heroFilmSub:'两种工件，分别独立验证。',independentlyVerified:'独立验证通过',stripLabel:'从自然语言到实际动作',
   workEyebrow:'01 / 实验现场',workTitle:'少一点描述。<br>多一点行动。',workDescription:'选择一项任务，看真实的执行过程。<br>然后打开驱动它的原始策略代码。',liftTag:'第一次抓起物体',stackTag:'精确放置，保持稳定',pickplaceTag:'把物体送到指定位置',resumeTag:'停得下来，也能继续',actualFootage:'真实仿真器录像',generatedPolicy:'模型自主生成的 POLICY',copy:'复制',original:'原始文件 ↗',codeNote:'保留模型生成的原文，未经人工修正。',metricResult:'独立任务验证',metricTime:'任务实际耗时',metricCalls:'模型请求次数',metricMotion:'移动到位次数',details:'运行记录 +',originalVideo:'查看原始录像 ↗',selectionNote:'这里展示精选成功记录，不代表总体成功率。录像仅包含仿真时段，不包含模型等待；不同记录的模型与协议不同。所有演示均为仿真，尚不代表真实机械臂验收。',
   systemEyebrow:'02 / 如何运作',systemTitle:'智能需要闭环。<br>结果需要证据。',sense:'观察当前世界。',senseText:'通过 RGB-D 和相机标定获得可计算的几何信息，让行动有据可依。',plan:'写出下一步。',planText:'语言模型自主生成 Python 策略，并根据执行反馈修正下一步。',act:'让控制可控。',actText:'独立运行时管理武装、租约、逐周期反馈控制和用户中断。',verify:'核对真实结果。',verifyText:'独立任务检查确认结果，停止回执和租约释放完成收尾。',
   recoveryEyebrow:'03 / 一次真实的暂停',recoveryTitle:'暂停动作。<br>继续完成。',recoveryDescription:'移动途中，操作者按下停止。<br>Agent 必须根据此刻的状态重新出发。',stopMetric:'本次测得的停止 ACK',stopNote:'一次本地仿真测量。<br>不代表实时性保证。',log1:'运动被中断',log1Text:'停止 ACK 确认，随后五秒没有新增运动。',log2:'重新观察当前状态',log2Text:'旧租约被拒绝，agent 自行申请了新租约。',log3:'新策略，完成叠放',log3Text:'恢复后的十次移动均到位，两次任务验证通过。',log4:'明确完成收尾',log4Text:'Agent 主动停止、确认 ACK，并释放租约。',evidenceNote:'每一个结果，都有对应的记录。',inspectEvidence:'查看运行数据与文件哈希 ↗',
   closingEyebrow:'开放代码，可观察行为。',closingTitle:'给语言<br>一双行动的手<span class="accent">。</span>',exploreSource:'查看项目源码',runLocally:'在 Mac 上运行 ↗',setupNote:'需要先安装项目并配置模型与仿真器，详见运行手册。',footer:'独立具身智能项目。',footerStatus:'持续开放构建'
 };
 Object.assign(zh, {
+  dualEyebrow:'新增 / 双规格混料装配',dualTitle:'两种工件。<br>一个自主装配工位。',dualSummary:'圆螺母、方螺母，对应不同柱。<br>视觉识别，分别装配，逐件验证。',dualBoundary:'一场真实 CLI 自主实跑：两件验证通过，16/16 移动到位，31 次请求、8 分 51 秒。保留全部 16 份模型策略和失败尝试。这是演示，不是成功率估计。工业画面保留全部记录帧，省略模型等待。',dualWatch:'观看双件装配与原始策略 ↗',dualTag:'两种形状，分别匹配。',
   nutTag:'抓取、对孔、套入',
   replanTag:'暂停、改优先级、继续完成',
   replanVerified:'实跑已验证',
@@ -135,7 +136,7 @@ $('#policy-select').addEventListener('change',event=>loadPolicy(Number(event.tar
 $('#details-toggle').addEventListener('click',()=>{$('#run-details').hidden=!$('#run-details').hidden;$('#details-toggle').setAttribute('aria-expanded',String(!$('#run-details').hidden));renderRunText();});
 const tabs=[...document.querySelectorAll('[data-task]')];
 for(const tab of tabs){tab.addEventListener('click',()=>selectRun(tab.dataset.task,{autoplay:true}));tab.addEventListener('keydown',event=>{const index=tabs.indexOf(tab);let target;if(event.key==='ArrowRight')target=tabs[(index+1)%tabs.length];if(event.key==='ArrowLeft')target=tabs[(index-1+tabs.length)%tabs.length];if(event.key==='Home')target=tabs[0];if(event.key==='End')target=tabs.at(-1);if(target){event.preventDefault();target.focus();selectRun(target.dataset.task,{autoplay:true});}});}
-const initialId=location.hash.startsWith('#run-')?location.hash.slice(5):'nut';
+const initialId=location.hash.startsWith('#run-')?location.hash.slice(5):'dual-nut';
 setLanguage(language);await selectRun(initialId);
 if(location.hash.startsWith('#run-'))$('#experiments').scrollIntoView({behavior:'instant'});
 
